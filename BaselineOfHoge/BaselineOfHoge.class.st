@@ -17,7 +17,7 @@ BaselineOfHoge >> baseline: spec [
 				configuration: 'WebBrowser'
 				with: [ spec
 						versionString: #stable;
-						repository: 'http://www.squeaksource.com/Pharo/MetaRepoForPharo60' ].
+						repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo60/main' ].
 			spec
 				configuration: 'OSProcess'
 				with: [ spec
