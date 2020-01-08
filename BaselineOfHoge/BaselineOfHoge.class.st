@@ -10,6 +10,7 @@ BaselineOfHoge >> baseline: spec [
 	spec
 		for: #common
 		do: [ 
+			spec package: #'Hoge'.
 			spec
 				configuration: 'OSProcess'
 					with: [ spec
