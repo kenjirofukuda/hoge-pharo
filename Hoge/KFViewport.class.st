@@ -88,10 +88,13 @@ KFViewport >> canGridDraw [
 
 { #category : #private }
 KFViewport >> damageTransform [
-	lockUpdate ifTrue: [ updateCount := updateCount + 1. ^  self ].
+	lockUpdate
+		ifTrue: [ 
+			updateCount := updateCount + 1.
+			^ self ].
 	basicTransform := nil.
 	transform := nil.
-	self announcer announce: #viewTransformChanged.
+	self announcer announce: #viewTransformChanged
 ]
 
 { #category : #defaults }
