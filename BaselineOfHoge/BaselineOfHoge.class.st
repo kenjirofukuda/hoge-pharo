@@ -24,6 +24,6 @@ BaselineOfHoge >> baseline: spec [
 							versionString: #stable;
 							repository: 'http://mc.stfx.eu/Neo' ].
 			spec
-				package: 'GeometryUtils'
-				with: [ spec repository: 'github://kenjirofukuda/geom-pharo:Pharo6.1' ] ]
+				baseline: 'KFImaging'
+				with: [ spec repository: 'github://kenjirofukuda/imaging-pharo:Pharo6.1' ] ]
 ]
