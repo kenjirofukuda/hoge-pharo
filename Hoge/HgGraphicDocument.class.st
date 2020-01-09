@@ -59,7 +59,9 @@ HgGraphicDocument >> addGraphics: aHgGraphicCollection [
 
 { #category : #accessing }
 HgGraphicDocument >> appConfigDirectory [
-	^ OSPlatform current userConfigDirectory / 'hoge' 
+	^ (OSPlatform current userConfigDirectory / 'hoge')
+			ensureCreateDirectory;
+			yourself
 ]
 
 { #category : #accessing }
