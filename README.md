@@ -1,3 +1,5 @@
+# INSTALL
+
 ```
 Metacello new
    baseline: 'Hoge';
