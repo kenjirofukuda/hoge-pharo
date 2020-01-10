@@ -103,7 +103,7 @@ HgGraphicViewMorph >> drawAxisOn: aCanvas [
 
 { #category : #'drawing sparta' }
 HgGraphicViewMorph >> drawAxisSpartaCanvasOn: aSpartaCanvas [
-	| hvPoint path |
+	"| hvPoint path |
 	hvPoint := self viewport xy2hv: 0 @ 0.
 	path := aSpartaCanvas path
 		moveTo: (hvPoint x @ 0);
@@ -114,7 +114,7 @@ HgGraphicViewMorph >> drawAxisSpartaCanvasOn: aSpartaCanvas [
 	aSpartaCanvas stroke 
 		paint: Color black;
 		path: path;
-		draw.
+		draw."
 ]
 
 { #category : #drawing }
@@ -139,14 +139,14 @@ HgGraphicViewMorph >> drawExtentBoundsOn: aCanvas [
 
 { #category : #'drawing sparta' }
 HgGraphicViewMorph >> drawExtentBoundsSpartaCanvasOn: aSpartaCanvas [
-	| xyBounds hvBounds |
+	"| xyBounds hvBounds |
 	xyBounds := self document bounds.
 	hvBounds := (self viewport xy2hv: xyBounds origin)
 		corner: (self viewport xy2hv: xyBounds corner).
 	aSpartaCanvas stroke
 		paint: self extentBoundsColor;
 		path: hvBounds;
-		draw
+		draw"
 ]
 
 { #category : #drawing }
@@ -161,10 +161,10 @@ HgGraphicViewMorph >> drawLocalOn: aCanvas [
 
 { #category : #'drawing sparta' }
 HgGraphicViewMorph >> drawNewCanvasOn: aCanvas [
-	| newCanvas |
+	"| newCanvas |
 	newCanvas := MozCanvas extent: self innerBounds extent.
 	self drawSpartaCanvasOn: newCanvas.
-	aCanvas drawImage: newCanvas asForm form at: 0 @ 0
+	aCanvas drawImage: newCanvas asForm form at: 0 @ 0"
 ]
 
 { #category : #drawing }
@@ -178,13 +178,13 @@ HgGraphicViewMorph >> drawOn: aCanvas [
 
 { #category : #'drawing sparta' }
 HgGraphicViewMorph >> drawSpartaCanvasOn: aSpartaCanvas [
-	self showAxisLines
+	"self showAxisLines
 		ifTrue: [ self drawAxisSpartaCanvasOn: aSpartaCanvas ].
 	self document
 		ifNotNil: [ :doc | 
 			doc graphics do: [ :each | each drawSpartaCanvasOn: aSpartaCanvas viewport: self viewport ].
 			self showExtentBounds
-				ifTrue: [ self drawExtentBoundsSpartaCanvasOn: aSpartaCanvas ] ]
+				ifTrue: [ self drawExtentBoundsSpartaCanvasOn: aSpartaCanvas ] ]"
 ]
 
 { #category : #drawing }

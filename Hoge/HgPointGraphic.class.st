@@ -28,9 +28,9 @@ HgPointGraphic >> drawOn: aCanvas viewport: aViewport [
 	aCanvas frameOval: (hvPoint - halfPoint corner: hvPoint + halfPoint) color: self strokeColor
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing sparta' }
 HgPointGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
-	| hvPoint circle |
+	"| hvPoint circle |
 	hvPoint := aViewport xy2hv: self origin.
 	self selected
 		ifTrue: [ 
@@ -44,7 +44,7 @@ HgPointGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
 	aSpartaCanvas stroke
 		paint: self strokeColor;
 		path: circle;
-		draw
+		draw"
 ]
 
 { #category : #drawing }

@@ -22,7 +22,7 @@ HgGraphic >> drawOn: aCanvas viewport: aViewport [
 
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing sparta' }
 HgGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
 
 ]
