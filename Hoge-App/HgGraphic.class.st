@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'selected'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #accessing }

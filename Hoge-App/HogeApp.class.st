@@ -17,7 +17,7 @@ Class {
 	#classVars : [
 		'PngSaveDirectory'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #specs }
@@ -40,7 +40,7 @@ HogeApp class >> example [
 { #category : #'menu items' }
 HogeApp class >> hogeMenuOn: aBuilder [ 
 	<worldMenu>
-	(aBuilder item: #HogeApp)
+	(aBuilder item: #Hoge)
 		order: 5.0;
 		help: 'HogeApp open';
 		action: [self example].
@@ -58,8 +58,9 @@ HogeApp class >> savePngMorph: aMorph [
 { #category : #settings }
 HogeApp class >> settingsOn: aBuilder [
 	<systemsettings>
-	(aBuilder group: #HogeApp)
-		with: [ (aBuilder setting: #pngSaveDirectory)
+	(aBuilder group: #Hoge)
+		with: [ 
+			(aBuilder setting: #pngSaveDirectory)
 				type: #Directory;
 				target: HogeAppSettings;
 				targetSelector: #instance;
@@ -210,7 +211,7 @@ HogeApp >> fileMenu [
 						name: 'Settings...';
 						action: [ 
 							SettingBrowser new
-								changePackageSet: {(RPackageOrganizer default packageNamed: 'Hoge')};
+								changePackageSet: {self class package};
 								open;
 								expandAll ] ] ]
 ]

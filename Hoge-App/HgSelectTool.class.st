@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'document'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #accessing }

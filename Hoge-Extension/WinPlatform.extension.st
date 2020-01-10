@@ -1,6 +1,6 @@
 Extension { #name : #WinPlatform }
 
-{ #category : #'*Hoge' }
+{ #category : #'*Hoge-Extension' }
 WinPlatform >> userConfigDirectory [
 	^ FileLocator home / 'AppData' / 'Local'
 ]

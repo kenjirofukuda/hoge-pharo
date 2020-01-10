@@ -6,7 +6,7 @@ Class {
 		'mouseHV',
 		'sizeWH'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #specs }

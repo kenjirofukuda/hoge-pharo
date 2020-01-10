@@ -1,6 +1,6 @@
 Extension { #name : #UnixPlatform }
 
-{ #category : #'*Hoge' }
+{ #category : #'*Hoge-Extension' }
 UnixPlatform >> userConfigDirectory [
 	^ FileLocator home / '.config'
 ]

@@ -15,18 +15,20 @@ BaselineOfHoge >> baseline: spec [
 				with: [ spec repository: 'github://kenjirofukuda/imaging-pharo:Pharo6.1' ].
 			spec
 				configuration: 'WebBrowser'
-				with: [ spec
+				with: [ 
+					spec
 						versionString: #stable;
 						repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo60/main' ].
 			spec
-				configuration: 'OSProcess'
-				with: [ spec
-						versionString: #stable;
-						repository: 'http://www.squeaksource.com/MetacelloRepository' ].
-			spec
 				configuration: 'NeoCSV'
-				with: [ spec
+				with: [ 
+					spec
 						versionString: #stable;
 						repository: 'http://mc.stfx.eu/Neo' ].
-			spec package: #Hoge with: [ spec requires: #('KFImaging' 'OSProcess' 'NeoCSV') ] ]
+			spec package: 'Hoge-Extension'.
+			spec package: 'Hoge-Generic' with: [ spec requires: #('KFImaging') ].
+			spec
+				package: 'Hoge-App'
+				with: [ spec requires: #('KFImaging' 'NeoCSV' 'Hoge-Generic' 'Hoge-Extension') ].
+			spec group: 'default' with: #('Hoge-App') ]
 ]

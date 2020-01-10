@@ -1,6 +1,6 @@
 Extension { #name : #OSPlatform }
 
-{ #category : #'*Hoge' }
+{ #category : #'*Hoge-Extension' }
 OSPlatform >> userConfigDirectory [
 	^ self subclassResponsibility 
 ]

@@ -5,7 +5,7 @@ Class {
 		'graphics',
 		'editingState'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #'redo-undo' }

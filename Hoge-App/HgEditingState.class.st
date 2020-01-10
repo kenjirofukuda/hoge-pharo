@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'undoManager'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #'undo-redo' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #HgPointTool,
 	#superclass : #HgSelectTool,
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #'event handler' }

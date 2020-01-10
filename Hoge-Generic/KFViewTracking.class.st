@@ -6,7 +6,7 @@ Class {
 		'currentEvent',
 		'points'
 	],
-	#category : #Hoge
+	#category : #'Hoge-Generic'
 }
 
 { #category : #accessing }

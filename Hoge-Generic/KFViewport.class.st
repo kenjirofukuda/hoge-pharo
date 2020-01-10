@@ -56,7 +56,7 @@ Class {
 		'updateCount',
 		'announcer'
 	],
-	#category : #Hoge
+	#category : #'Hoge-Generic'
 }
 
 { #category : #'as yet unclassified' }

@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'Instance'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #accessing }

@@ -11,7 +11,7 @@ Class {
 		'showAxisLines',
 		'showExtentBounds'
 	],
-	#category : #Hoge
+	#category : #'Hoge-App'
 }
 
 { #category : #drawing }
