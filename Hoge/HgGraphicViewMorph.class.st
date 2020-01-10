@@ -159,7 +159,7 @@ HgGraphicViewMorph >> drawLocalOn: aCanvas [
 	aCanvas drawImage: self ensureOffCanvas form at: 0 @ 0
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing sparta' }
 HgGraphicViewMorph >> drawNewCanvasOn: aCanvas [
 	| newCanvas |
 	newCanvas := MozCanvas extent: self innerBounds extent.
