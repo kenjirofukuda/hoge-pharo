@@ -14,12 +14,6 @@ BaselineOfHoge >> baseline: spec [
 				baseline: 'KFImaging'
 				with: [ spec repository: 'github://kenjirofukuda/imaging-pharo:Pharo6.1' ].
 			spec
-				configuration: 'WebBrowser'
-				with: [ 
-					spec
-						versionString: #stable;
-						repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo60/main' ].
-			spec
 				configuration: 'NeoCSV'
 				with: [ 
 					spec

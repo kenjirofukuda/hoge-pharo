@@ -40,12 +40,12 @@ KFViewTracking >> localPixelPoint [
 
 { #category : #private }
 KFViewTracking >> noDragAction [
-	| menu |
+	"| menu |
 	menu := MenuModel new
 		addGroup: [ :group | 
 			self setupMenu: group ].
 	Cursor normal show.
-	menu openWithSpecAt: event cursorPoint
+	menu openWithSpecAt: event cursorPoint"
 ]
 
 { #category : #accessing }
@@ -59,58 +59,6 @@ KFViewTracking >> offset [
 { #category : #accessing }
 KFViewTracking >> offsetPixelPoint [
 	^ (currentEvent cursorPoint - event cursorPoint)
-]
-
-{ #category : #menu }
-KFViewTracking >> setupEditorMenu: aMenuGroupModel [
-	self structureMorph idNotEmpty
-		ifTrue: [ 
-			self setupIdSelectionMenu: aMenuGroupModel ].
-
-]
-
-{ #category : #menu }
-KFViewTracking >> setupIdSelectionMenu: aMenuGroupModel [
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Fit selection' translated;
-				action: [ self structureMorph viewport viewBounds: event handler structure dataExtentForIdElements ] ].
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Clear selection' translated;
-				action: [ self structureMorph structure idSelection idClear ] ].
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Explore selection' translated;
-				action: [ | elements |
-					elements := self structureMorph structure idSelection elements.
-					(elements size = 1 ifTrue: [ elements first ] ifFalse: [ elements ])
-						explore.
-					 ] ].
-	aMenuGroupModel addItem: [ :item | item name: '-'].
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Delete' translated;
-				action: [ self structureMorph structure idSelection idDelete ] ]
-]
-
-{ #category : #menu }
-KFViewTracking >> setupMenu: aMenuGroupModel [
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Clear markers';
-				action: [ self structureMorph clearMarker] ].
-	aMenuGroupModel
-		addItem: [ :item | 
-			item
-				name: 'Fit';
-				shortcut: $f command;
-				action: [ self viewport viewFit ] ].			
 ]
 
 { #category : #accessing }

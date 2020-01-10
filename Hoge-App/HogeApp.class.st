@@ -109,8 +109,8 @@ HogeApp >> debugMenu [
 			group
 				addItem: [ :item | 
 					item
-						name: 'Reveal AppConfigDir';
-						action: [ WebBrowser openOn: self document appConfigDirectory resolve asUrl ] ].
+						name: 'Show AppConfigDir';
+						action: [ OSPlatform current shellReveal: self document appConfigDirectory ] ].
 			group
 				addItem: [ :item | 
 					item
