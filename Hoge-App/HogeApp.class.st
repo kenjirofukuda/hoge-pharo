@@ -120,18 +120,20 @@ HogeApp >> cmdShowAppConfigDir: sender [
 ]
 
 { #category : #commands }
-HogeApp >> cmdShowAxisline: sender [
-	self graphicView morph showAxisLines: self graphicView morph showAxisLines not
-]
-
-{ #category : #commands }
-HogeApp >> cmdShowExtentBounds: sender [ 
-	self graphicView morph showExtentBounds: self graphicView morph showExtentBounds not
-]
-
-{ #category : #commands }
 HogeApp >> cmdToggleCanvas: sender [ 
 	graphicView morph useNewCanvas: graphicView morph useNewCanvas not
+]
+
+{ #category : #commands }
+HogeApp >> cmdToggleShowsAxisline: sender [
+	self graphicView morph showAxisLines: self graphicView morph showAxisLines not.
+	sender name: self nameForToggleShowsAxisline
+]
+
+{ #category : #commands }
+HogeApp >> cmdToggleShowsExtentBounds: sender [
+	self graphicView morph showExtentBounds: self graphicView morph showExtentBounds not.
+	sender name: self nameForToggleShowsExtentBounds
 ]
 
 { #category : #'accessing menu' }
@@ -141,18 +143,20 @@ HogeApp >> debugMenu [
 			group
 				addItem: [ :item | 
 					item
-						name: 'Show AppConfigDir';
+						name: 'Show configuration folder';
 						action: [ self cmdShowAppConfigDir: item ] ].
 			group
 				addItem: [ :item | 
 					item
-						name: 'Show Axis line';
-						action: [ self cmdShowAxisline: item ] ].
+						name: self nameForToggleShowsAxisline;
+						autoRefresh: true;
+						action: [ self cmdToggleShowsAxisline: item ] ].
 			group
 				addItem: [ :item | 
 					item
-						name: 'Show Extent bounds';
-						action: [ self cmdShowExtentBounds: item ] ].
+						name: self nameForToggleShowsExtentBounds;
+						autoRefresh: true;
+						action: [ self cmdToggleShowsExtentBounds: item ] ].
 			group
 				addItem: [ :item | 
 					item
@@ -336,6 +340,24 @@ HogeApp >> initializeWidgets [
 { #category : #'accessing menu' }
 HogeApp >> menuBar [
 	^ menuBar
+]
+
+{ #category : #'dynamic caption' }
+HogeApp >> nameForToggleShowsAxisline [
+	^ '<1s> Axis lines'
+		expandMacrosWith:
+			(self graphicView morph showAxisLines
+				ifTrue: [ 'Hide' ]
+				ifFalse: [ 'Show' ])
+]
+
+{ #category : #'dynamic caption' }
+HogeApp >> nameForToggleShowsExtentBounds [
+	^ '<1s> Extent bounds'
+		expandMacrosWith:
+			(self graphicView morph showExtentBounds
+				ifTrue: [ 'Hide' ]
+				ifFalse: [ 'Show' ])
 ]
 
 { #category : #accessing }
