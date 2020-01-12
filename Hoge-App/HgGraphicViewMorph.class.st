@@ -101,22 +101,6 @@ HgGraphicViewMorph >> drawAxisOn: aCanvas [
 	aCanvas line: (0 @ hvPoint y) to: (self extent x @ hvPoint y) color: Color black.	
 ]
 
-{ #category : #'drawing sparta' }
-HgGraphicViewMorph >> drawAxisSpartaCanvasOn: aSpartaCanvas [
-	"| hvPoint path |
-	hvPoint := self viewport xy2hv: 0 @ 0.
-	path := aSpartaCanvas path
-		moveTo: (hvPoint x @ 0);
-		lineTo: (hvPoint x @ self extent y);
-		moveTo: (0 @ hvPoint y);
-		lineTo: (self extent x @ hvPoint y);
-		finish. 
-	aSpartaCanvas stroke 
-		paint: Color black;
-		path: path;
-		draw."
-]
-
 { #category : #drawing }
 HgGraphicViewMorph >> drawClasicCanvasOn: aCanvas [
 	self showAxisLines
@@ -137,34 +121,14 @@ HgGraphicViewMorph >> drawExtentBoundsOn: aCanvas [
 	aCanvas frameRectangle: hvBounds color: self extentBoundsColor
 ]
 
-{ #category : #'drawing sparta' }
-HgGraphicViewMorph >> drawExtentBoundsSpartaCanvasOn: aSpartaCanvas [
-	"| xyBounds hvBounds |
-	xyBounds := self document bounds.
-	hvBounds := (self viewport xy2hv: xyBounds origin)
-		corner: (self viewport xy2hv: xyBounds corner).
-	aSpartaCanvas stroke
-		paint: self extentBoundsColor;
-		path: hvBounds;
-		draw"
-]
-
 { #category : #drawing }
 HgGraphicViewMorph >> drawLocalOn: aCanvas [
 	offCanvas
 		ifNil: [ 
 			self useNewCanvas
 				ifFalse: [ self drawClasicCanvasOn: self ensureOffCanvas ]
-				ifTrue: [ self drawNewCanvasOn: self ensureOffCanvas ] ].
+				ifTrue: [ self perform: #drawNewCanvasOn: with: self ensureOffCanvas ] ].
 	aCanvas drawImage: self ensureOffCanvas form at: 0 @ 0
-]
-
-{ #category : #'drawing sparta' }
-HgGraphicViewMorph >> drawNewCanvasOn: aCanvas [
-	"| newCanvas |
-	newCanvas := MozCanvas extent: self innerBounds extent.
-	self drawSpartaCanvasOn: newCanvas.
-	aCanvas drawImage: newCanvas asForm form at: 0 @ 0"
 ]
 
 { #category : #drawing }
@@ -174,17 +138,6 @@ HgGraphicViewMorph >> drawOn: aCanvas [
 		translateBy: self topLeft
 		clippingTo: self clippingBounds
 		during: [ :c | self drawLocalOn: c ]
-]
-
-{ #category : #'drawing sparta' }
-HgGraphicViewMorph >> drawSpartaCanvasOn: aSpartaCanvas [
-	"self showAxisLines
-		ifTrue: [ self drawAxisSpartaCanvasOn: aSpartaCanvas ].
-	self document
-		ifNotNil: [ :doc | 
-			doc graphics do: [ :each | each drawSpartaCanvasOn: aSpartaCanvas viewport: self viewport ].
-			self showExtentBounds
-				ifTrue: [ self drawExtentBoundsSpartaCanvasOn: aSpartaCanvas ] ]"
 ]
 
 { #category : #drawing }

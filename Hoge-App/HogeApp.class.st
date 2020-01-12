@@ -348,7 +348,8 @@ HogeApp >> initializePresenter [
 	self document graphicsProperty 
 		whenChangedSend: #changed to: self graphicView morph. 
 	self document graphicsProperty 
-		whenChangedDo: [ (menuItemMap at: #clear) enabled: self document graphics notEmpty ]
+		whenChangedDo: [ (menuItemMap at: #clear) enabled: self document graphics notEmpty ].
+	self whenWindowChanged: [:w | w whenClosedDo: [ UIManager default inform: 'Bye bye!' ]  ]
 ]
 
 { #category : #initialization }

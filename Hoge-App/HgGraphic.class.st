@@ -22,11 +22,6 @@ HgGraphic >> drawOn: aCanvas viewport: aViewport [
 
 ]
 
-{ #category : #'drawing sparta' }
-HgGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
-
-]
-
 { #category : #drawing }
 HgGraphic >> halfHandleSize [
 	^ HogeAppSettings instance handleSize // 2.
