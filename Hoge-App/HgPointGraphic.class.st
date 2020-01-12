@@ -73,6 +73,15 @@ HgPointGraphic >> pointDisplayHalfSize [
 	^ HogeAppSettings instance pointDisplaySize // 2 
 ]
 
+{ #category : #printing }
+HgPointGraphic >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	self origin printOn: aStream.
+	aStream nextPut: $).
+	
+]
+
 { #category : #drawing }
 HgPointGraphic >> strokeColor [
 	^ Color black

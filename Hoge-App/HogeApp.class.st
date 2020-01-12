@@ -102,6 +102,38 @@ HogeApp class >> windowMenuOn: aBuilder [
 				withSeparatorAfter ]
 ]
 
+{ #category : #commands }
+HogeApp >> cmdInspectDocument: sender [
+	self document explore.
+]
+
+{ #category : #commands }
+HogeApp >> cmdInstallSampleGraphics: sender [
+	| worldBounds |
+	worldBounds := self graphicView morph viewport worldViewBounds.
+	self document installSampleGraphicsBounds: worldBounds
+]
+
+{ #category : #commands }
+HogeApp >> cmdShowAppConfigDir: sender [
+	OSPlatform current shellReveal: self document appConfigDirectory
+]
+
+{ #category : #commands }
+HogeApp >> cmdShowAxisline: sender [
+	self graphicView morph showAxisLines: self graphicView morph showAxisLines not
+]
+
+{ #category : #commands }
+HogeApp >> cmdShowExtentBounds: sender [ 
+	self graphicView morph showExtentBounds: self graphicView morph showExtentBounds not
+]
+
+{ #category : #commands }
+HogeApp >> cmdToggleCanvas: sender [ 
+	graphicView morph useNewCanvas: graphicView morph useNewCanvas not
+]
+
 { #category : #'accessing menu' }
 HogeApp >> debugMenu [
 	^ MenuModel new
@@ -110,30 +142,34 @@ HogeApp >> debugMenu [
 				addItem: [ :item | 
 					item
 						name: 'Show AppConfigDir';
-						action: [ OSPlatform current shellReveal: self document appConfigDirectory ] ].
+						action: [ self cmdShowAppConfigDir: item ] ].
 			group
 				addItem: [ :item | 
 					item
 						name: 'Show Axis line';
-						action: [ self graphicView morph showAxisLines: self graphicView morph showAxisLines not ] ].
+						action: [ self cmdShowAxisline: item ] ].
 			group
 				addItem: [ :item | 
 					item
 						name: 'Show Extent bounds';
-						action: [ self graphicView morph showExtentBounds: self graphicView morph showExtentBounds not ] ].
+						action: [ self cmdShowExtentBounds: item ] ].
 			group
 				addItem: [ :item | 
 					item
 						name: 'Install sample graphics';
-						action: [ | worldBounds |
-							worldBounds := self graphicView morph viewport worldViewBounds.
-							self document installSampleGraphicsBounds: worldBounds ] ].
+						action: [ self cmdInstallSampleGraphics: item ] ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Inspect document';
+						action: [ self cmdInspectDocument: item ] ].
 			self graphicView morph newCanvasEnabled
-				ifTrue: [ group
+				ifTrue: [ 
+					group
 						addItem: [ :item | 
 							item
 								name: 'Toggle Canvas';
-								action: [ graphicView morph useNewCanvas: graphicView morph useNewCanvas not ] ] ] ]
+								action: [ self cmdToggleCanvas: item ] ] ] ]
 ]
 
 { #category : #accessing }
