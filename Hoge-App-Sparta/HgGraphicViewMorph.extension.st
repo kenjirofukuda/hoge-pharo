@@ -53,19 +53,9 @@ HgGraphicViewMorph >> drawSpartaCanvasOn: aSpartaCanvas [
 
 { #category : #'*Hoge-App-Sparta' }
 HgGraphicViewMorph >> lookupSpartaCanvasClass [
-	| enabled |
-	enabled := true.
-	[ | t |
-	t := MozCanvasFillTests new.
-	[ t setUp.
-	[ t testFillCanvasWhite ]
-		on: Error
-		do: [ enabled := false ] ]
-		ensure: [ t tearDown.
-			t cleanUpInstanceVariables ] ].
-	^ enabled
-		ifTrue: [ MozCanvas ]
-		ifFalse: [ SpartaCairoCanvas ]
+	^ Smalltalk os isWindows
+		ifTrue: [ SpartaCairoCanvas  ]
+		ifFalse: [ MozCanvas ]
 ]
 
 { #category : #'*Hoge-App-Sparta' }
