@@ -9,7 +9,8 @@ Class {
 		'newCanvasEnabled',
 		'toolClass',
 		'showAxisLines',
-		'showExtentBounds'
+		'showExtentBounds',
+		'spartaCanvasClass'
 	],
 	#category : #'Hoge-App'
 }
@@ -220,14 +221,21 @@ HgGraphicViewMorph >> isNavigarionClick: aMouseButtonEvent [
 
 { #category : #private }
 HgGraphicViewMorph >> lookupNewCanvasEnabled [
-	^ ([ #MozCanvas asClass ]
+	#(#MozCanvas #SpartaCairoCanvas)
+		do: [ :canvasClass | (self lookupNewCanvasEnabled: canvasClass) ifTrue: [ ^ true ] ].
+	^ false
+]
+
+{ #category : #private }
+HgGraphicViewMorph >> lookupNewCanvasEnabled: aClassNameSymbol [
+	^ ([ aClassNameSymbol asClass ]
 		on: Error
 		do: [ :ex | ex return: nil ])
 		ifNil: [ false ]
 		ifNotNil: [ :clazz | 
 			([ clazz extent: 5 @ 5 ]
-				on: Error "Windows dll moz2d dll not ready."
-				do: [ :ex | ex return: nil ]) notNil ]
+				on: Error
+				do: [ :ex | ex return: nil ]) notNil	"Windows dll moz2d dll not ready." ]
 ]
 
 { #category : #'events-processing' }

@@ -31,7 +31,7 @@ HgGraphicViewMorph >> drawExtentBoundsSpartaCanvasOn: aSpartaCanvas [
 { #category : #'*Hoge-App-Sparta' }
 HgGraphicViewMorph >> drawNewCanvasOn: aCanvas [
 	| newCanvas |
-	newCanvas := MozCanvas extent: self innerBounds extent.
+	newCanvas := self spartaCanvasClass extent: self innerBounds extent.
 	self drawSpartaCanvasOn: newCanvas.
 	aCanvas drawImage: newCanvas asForm form at: 0 @ 0
 ]
@@ -49,4 +49,16 @@ HgGraphicViewMorph >> drawSpartaCanvasOn: aSpartaCanvas [
 			doc graphics do: [ :each | each drawSpartaCanvasOn: aSpartaCanvas viewport: self viewport ].
 			self showExtentBounds
 				ifTrue: [ self drawExtentBoundsSpartaCanvasOn: aSpartaCanvas ] ]
+]
+
+{ #category : #'*Hoge-App-Sparta' }
+HgGraphicViewMorph >> lookupSpartaCanvasClass [
+	[MozCanvasFillTests new testFillCanvasWhite] 
+		on: Error do: [ ^ SpartaCairoCanvas ] .
+	^ MozCanvas
+]
+
+{ #category : #'*Hoge-App-Sparta' }
+HgGraphicViewMorph >> spartaCanvasClass [
+	^ spartaCanvasClass ifNil: [ spartaCanvasClass := self lookupSpartaCanvasClass ]
 ]
