@@ -15,16 +15,17 @@ BaselineOfHoge >> baseline: spec [
 				with: [ spec repository: 'github://kenjirofukuda/imaging-pharo:Pharo6.1' ].
 			spec
 				configuration: 'NeoCSV'
-				with: [ spec
+				with: [ 
+					spec
 						versionString: #stable;
 						repository: 'http://mc.stfx.eu/Neo' ].
 			spec
-				for: #Windows
-				do: [ 
-					spec
-						baseline: 'OSWindows';
-						repository: 'github://astares/Pharo-OS-Windows' ].
-			spec package: 'Hoge-Extension'.
+				baseline: 'OSWindows';
+				repository: 'github://astares/Pharo-OS-Windows'.
+			spec
+				package: 'Hoge-Extension'
+				with: [ 
+					spec for: #Windows do: [ spec requires: #('OSWindows') ] ].
 			spec package: 'Hoge-Generic' with: [ spec requires: #('KFImaging') ].
 			spec
 				package: 'Hoge-App'
