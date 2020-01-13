@@ -2,13 +2,18 @@ Extension { #name : #WinPlatform }
 
 { #category : #'*Hoge-Extension' }
 WinPlatform >> shellReveal: aFileReference [
-	aFileReference isFile
-		ifTrue: [ 
-			#OSProcess
-				asClassIfPresent: [ :clazz | 
-					clazz command: ('explorer.exe /select,"<1s>"' expandMacrosWith: aFileReference fullName) ] ]
-		ifFalse: [ #(#NBWin32Shell #WinShell)
-				do: [ :each | each asClassIfPresent: [ :clazz | ^ clazz shellExplore: aFileReference fullName ] ] ]
+	#WinShell
+		asClassIfPresent: [ :clazz | 
+			aFileReference isFile
+				ifTrue: [ 
+					clazz
+						shellExecute: 'open'
+						file: 'explorer'
+						parameters: ('/select,"<1s>"' expandMacrosWith: aFileReference fullName)
+						directory: ''
+						show: 5 ]
+				ifFalse: [ 
+					clazz shellExplore: aFileReference fullName ] ]
 ]
 
 { #category : #'*Hoge-Extension' }
