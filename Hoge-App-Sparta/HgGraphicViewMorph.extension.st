@@ -5,15 +5,16 @@ HgGraphicViewMorph >> drawAxisSpartaCanvasOn: aSpartaCanvas [
 	| hvPoint path |
 	hvPoint := self viewport xy2hv: 0 @ 0.
 	path := aSpartaCanvas path
-		moveTo: (hvPoint x @ 0);
-		lineTo: (hvPoint x @ self extent y);
-		moveTo: (0 @ hvPoint y);
-		lineTo: (self extent x @ hvPoint y);
-		finish. 
-	aSpartaCanvas stroke 
+		moveTo: hvPoint x @ 0;
+		lineTo: hvPoint x @ self extent y;
+		moveTo: 0 @ hvPoint y;
+		lineTo: self extent x @ hvPoint y;
+		finish.
+	aSpartaCanvas stroke
 		paint: Color black;
 		path: path;
-		draw.
+		drawOptions: (self spartaDrawOptions: aSpartaCanvas);
+		draw
 ]
 
 { #category : #'*Hoge-App-Sparta' }
@@ -25,6 +26,9 @@ HgGraphicViewMorph >> drawExtentBoundsSpartaCanvasOn: aSpartaCanvas [
 	aSpartaCanvas stroke
 		paint: self extentBoundsColor;
 		path: hvBounds;
+		strokeOptions: (aSpartaCanvas strokeOptions
+			width: 1.0);
+		drawOptions: (self spartaDrawOptions: aSpartaCanvas);
 		draw
 ]
 
@@ -61,4 +65,13 @@ HgGraphicViewMorph >> lookupSpartaCanvasClass [
 { #category : #'*Hoge-App-Sparta' }
 HgGraphicViewMorph >> spartaCanvasClass [
 	^ spartaCanvasClass ifNil: [ spartaCanvasClass := self lookupSpartaCanvasClass ]
+]
+
+{ #category : #'*Hoge-App-Sparta' }
+HgGraphicViewMorph >> spartaDrawOptions: aSpartaCanvas [
+	^ aSpartaCanvas drawOptions
+		alpha: 1.0;
+		antialiasGray;
+		"composeColorDodge;"
+		yourself.
 ]

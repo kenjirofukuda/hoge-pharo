@@ -5,8 +5,7 @@ HgPointGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
 	| hvPoint circle |
 	hvPoint := aViewport xy2hv: self origin.
 	self selected
-		ifTrue: [ 
-			| halfHandle |
+		ifTrue: [ | halfHandle |
 			halfHandle := self halfHandleSize asPoint.
 			aSpartaCanvas fill
 				paint: self handleColor;
@@ -16,5 +15,11 @@ HgPointGraphic >> drawSpartaCanvasOn: aSpartaCanvas viewport: aViewport [
 	aSpartaCanvas stroke
 		paint: self strokeColor;
 		path: circle;
+		drawOptions:
+			(aSpartaCanvas drawOptions
+				alpha: 1.0;
+				antialiasGray;
+				"composeColorDodge;"
+					yourself);
 		draw
 ]
