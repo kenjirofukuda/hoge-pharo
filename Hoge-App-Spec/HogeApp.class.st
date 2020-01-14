@@ -18,7 +18,7 @@ Class {
 		'AppIcon',
 		'PngSaveDirectory'
 	],
-	#category : #'Hoge-App'
+	#category : #'Hoge-App-Spec'
 }
 
 { #category : #resources }

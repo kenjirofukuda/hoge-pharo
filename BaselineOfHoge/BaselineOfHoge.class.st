@@ -33,7 +33,11 @@ BaselineOfHoge >> baseline: spec [
 				package: 'Hoge-App'
 				with: [ 
 					spec requires: #('KFImaging' 'NeoCSV' 'Hoge-Generic' 'Hoge-Extension') ].
-			spec group: 'default' with: #('Hoge-App') ]
+			spec
+				package: 'Hoge-App-Spec'
+				with: [ 
+					spec requires: #('Hoge-App') ].
+			spec group: 'default' with: #('Hoge-App-Spec') ]
 ]
 
 { #category : #accessing }
