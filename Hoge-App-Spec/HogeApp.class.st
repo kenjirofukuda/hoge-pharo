@@ -11,8 +11,7 @@ Class {
 		'menuBar',
 		'statusBar',
 		'document',
-		'menuItemMap',
-		'editingState'
+		'menuItemMap'
 	],
 	#classVars : [
 		'AppIcon',
@@ -129,7 +128,7 @@ HogeApp class >> windowMenuOn: aBuilder [
 
 { #category : #commands }
 HogeApp >> cmdInspectDocument: sender [
-	self document explore.
+	self document inspect
 ]
 
 { #category : #commands }
