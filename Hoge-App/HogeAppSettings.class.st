@@ -29,7 +29,8 @@ HogeAppSettings >> handleSize: anInteger [
 
 { #category : #accessing }
 HogeAppSettings >> pngSaveDirectory [
-	^ pngSaveDirectory
+	^ pngSaveDirectory ifNil: [
+		pngSaveDirectory :=  FileSystem workingDirectory fullName].
 ]
 
 { #category : #accessing }
