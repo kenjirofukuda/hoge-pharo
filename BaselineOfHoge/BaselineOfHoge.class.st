@@ -13,7 +13,7 @@ BaselineOfHoge >> baseline: spec [
 			spec
 				baseline: 'KFImaging'
 				with: [ 
-					spec repository: 'github://kenjirofukuda/imaging-pharo:Pharo6.1' ].
+					spec repository: 'github://kenjirofukuda/imaging-pharo:master' ].
 			spec
 				configuration: 'NeoCSV'
 				with: [ spec
