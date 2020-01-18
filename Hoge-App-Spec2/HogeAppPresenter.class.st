@@ -2,7 +2,11 @@ Class {
 	#name : #HogeAppPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'graphicsView'
+		'graphicsView',
+		'menuItemMap',
+		'menuBar',
+		'delegate',
+		'graphicView'
 	],
 	#category : #'Hoge-App-Spec2'
 }
@@ -10,7 +14,8 @@ Class {
 { #category : #specs }
 HogeAppPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #graphicsView;
+		add: #menuBar height: self toolbarHeight;
+		add: #graphicView;
 		yourself
 ]
 
@@ -24,13 +29,57 @@ HogeAppPresenter class >> hogeMenuOn: aBuilder [
 ]
 
 { #category : #initialization }
+HogeAppPresenter >> debugMenu [
+	^ self newMenu
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					item
+						name: 'Show configuration folder';
+						action: [ delegate cmdShowAppConfigDir ] ] ] 
+]
+
+{ #category : #initialization }
+HogeAppPresenter >> fileMenu [
+	^ self newMenu
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					menuItemMap at: #settings put: item.
+					item
+						name: 'Settings...';
+						action: [ 
+							delegate cmdOpenSettings ] ] ]
+]
+
+{ #category : #initialization }
+HogeAppPresenter >> initializeMenuBar [
+	menuItemMap := Dictionary new.
+	menuBar := self newMenuBar
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					item
+						name: 'File';
+						subMenu: self fileMenu ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Debug';
+						subMenu: self debugMenu ] ].
+	menuBar applyTo: self
+]
+
+{ #category : #initialization }
 HogeAppPresenter >> initializeWidgets [ 
-	graphicsView := self newMorph.
-	graphicsView morph: HgGraphicViewMorph new.
+	delegate := HogeAppDelegate new.
+	graphicView := self newMorph.
+	graphicView morph: delegate graphicViewMorph.
+	self initializeMenuBar.
 ]
 
 { #category : #initialization }
 HogeAppPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
-		title: 'Points View'.
+		title: delegate title.
 ]

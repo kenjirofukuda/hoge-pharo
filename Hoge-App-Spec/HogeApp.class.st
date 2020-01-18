@@ -10,30 +10,11 @@ Class {
 		'graphicView',
 		'menuBar',
 		'statusBar',
-		'document',
-		'menuItemMap'
-	],
-	#classVars : [
-		'AppIcon',
-		'PngSaveDirectory'
+		'menuItemMap',
+		'delegate'
 	],
 	#category : #'Hoge-App-Spec'
 }
-
-{ #category : #resources }
-HogeApp class >> appIcon [
-	^ AppIcon ifNil: [ AppIcon := self createAppIconForm  ]
-]
-
-{ #category : #private }
-HogeApp class >> createAppIconForm [
-	"https://freeicons.io/material-icons-device-2/wallpaper-icon-16295#"
- ^ (Form
-	extent: (16@16)
-	depth: 32
-	fromArray: #( 2032016926 4129103133 4280098077 4280098077 4280098077 4280098077 3961330973 337254938 337254938 3961330973 4280098077 4280098077 4280098077 4280098077 4129103133 2015239710 4129103133 4112325917 2703039773 2568756252 2568756252 2568756252 2250054941 67108864 67108864 2250054941 2568756252 2568756252 2568756252 2703039773 4112325917 4129103133 4280098077 2719751196 0 0 0 0 0 0 0 0 0 0 0 0 2719751196 4280098077 4280098077 2568756252 0 0 0 0 0 0 0 0 0 0 0 0 2568756252 4280098077 4280098077 2568756252 0 0 0 0 0 0 0 689905439 3910933532 2870746140 0 0 2568756252 4280098077 4280098077 2568756252 0 0 0 0 0 0 0 1310530845 4280098077 3860667677 0 0 2568756252 4280098077 3961330973 2250054941 0 0 0 0 0 0 0 16777216 1310530845 656022042 0 0 2250054941 3944553757 337254938 67108864 0 0 0 0 0 0 0 0 0 0 0 0 67108864 337254938 337254938 67108864 0 0 0 0 0 0 0 0 0 0 0 0 67108864 337254938 3961330973 2250054941 0 0 0 824123167 3407682845 337254938 0 0 169482778 0 0 0 2250054941 3961330973 4280098077 2568756252 0 0 320543515 3726449949 4280098077 3273465117 87241523 1209801756 4045217053 639310619 0 0 2568756252 4280098077 4280098077 2568756252 0 67108864 3189644830 4280098077 4280098077 4280098077 2669485341 3927776541 4280098077 3424460061 119809060 0 2568756252 4280098077 4280098077 2568756252 0 840900383 3424460061 3424460061 3424460061 3424460061 3424460061 3424460061 3424460061 3424460061 958077723 0 2568756252 4280098077 4280098077 2719751196 0 0 0 0 0 0 0 0 0 0 0 0 2719751196 4280098077 4129103133 4112325917 2703039773 2568756252 2568756252 2568756252 2250054941 67108864 67108864 2250054941 2568756252 2568756252 2568756252 2703039773 4112325917 4112325917 2015239710 4129103133 4280098077 4280098077 4280098077 4280098077 3944553757 337254938 337254938 3944553757 4280098077 4280098077 4280098077 4280098077 4112325917 1998462494)
-	offset: (0@0))
-]
 
 { #category : #specs }
 HogeApp class >> defaultSpec [
@@ -43,7 +24,7 @@ HogeApp class >> defaultSpec [
 			c
 				add: #menuBar height: self toolbarHeight;
 				add: #graphicView;
-				add: #statusBar height: self statusbarHeight ];
+				add: #statusBar height: HogeAppDelegate statusbarHeight ];
 		yourself
 ]
 
@@ -53,7 +34,7 @@ HogeApp class >> hogeMenuOn: aBuilder [
 	(aBuilder item: #Hoge)
 		order: 5.0;
 		help: 'HogeApp open';
-		icon: self appIcon;
+		icon: HogeAppDelegate appIcon;
 		action: [self open].
 ]
 
@@ -61,69 +42,13 @@ HogeApp class >> hogeMenuOn: aBuilder [
 HogeApp class >> open [
 	<example>
 	^ self new 
-		windowIcon: self appIcon;
+		windowIcon: HogeAppDelegate appIcon;
 		openWithSpec.
-]
-
-{ #category : #'menu items' }
-HogeApp class >> savePngMorph: aMorph [
-	PNGReadWriter
-		putForm: aMorph imageForm
-		onFileNamed:
-			(HogeAppSettings instance pngSaveDirectory asFileReference / (aMorph asString , '.png'))
-				nextVersion
-]
-
-{ #category : #settings }
-HogeApp class >> settingsOn: aBuilder [
-	<systemsettings>
-	(aBuilder group: #Hoge)
-		with: [ 
-			(aBuilder setting: #pngSaveDirectory)
-				type: #Directory;
-				target: HogeAppSettings;
-				targetSelector: #instance;
-				description: 'The path of a directory where png file';
-				label: 'PNG Save directory'.	"TODO: move to KFImaging"
-			(aBuilder range: #handleSize)
-				target: HogeAppSettings;
-				targetSelector: #instance;
-				default: 6;
-				description: 'Selection marker size';
-				label: 'Handle size';
-				range: (6 to: 16 by: 2).	"TODO: grouping"
-			(aBuilder range: #pointDisplaySize)
-				target: HogeAppSettings;
-				targetSelector: #instance;
-				default: 4;
-				description: 'Selection marker size';
-				label: 'Point display size';
-				range: (4 to: 16 by: 2)	"TODO: grouping" ]
-]
-
-{ #category : #specs }
-HogeApp class >> statusbarHeight [
-
-	^ StandardFonts defaultFont height + 2
 ]
 
 { #category : #api }
 HogeApp class >> windowIcon [
-	^ self appIcon 
-]
-
-{ #category : #'menu items' }
-HogeApp class >> windowMenuOn: aBuilder [
-	"Window Shot utility"
-
-	<windowMenu>
-	(HogeAppSettings instance pngSaveDirectory asString asFileReference isDirectory)
-		ifTrue: [ 
-			(aBuilder item: #'Save As PNG')
-				action: [ self savePngMorph: aBuilder model ];
-				iconName: #image;
-				order: 300;
-				withSeparatorAfter ]
+	^ HogeAppDelegate appIcon 
 ]
 
 { #category : #commands }
@@ -132,32 +57,15 @@ HogeApp >> cmdInspectDocument: sender [
 ]
 
 { #category : #commands }
-HogeApp >> cmdInstallSampleGraphics: sender [
-	| worldBounds |
-	worldBounds := self graphicView morph viewport worldViewBounds.
-	self document installSampleGraphicsBounds: worldBounds
-]
-
-{ #category : #commands }
-HogeApp >> cmdShowAppConfigDir: sender [
-	OSPlatform current shellReveal: self document appConfigDirectory
-]
-
-{ #category : #commands }
-HogeApp >> cmdToggleCanvas: sender [ 
-	graphicView morph useNewCanvas: graphicView morph useNewCanvas not
-]
-
-{ #category : #commands }
 HogeApp >> cmdToggleShowsAxisline: sender [
-	self graphicView morph showAxisLines: self graphicView morph showAxisLines not.
-	sender name: self nameForToggleShowsAxisline
+	delegate cmdToggleShowsAxisline.
+	sender name: delegate nameForToggleShowsAxisline
 ]
 
 { #category : #commands }
 HogeApp >> cmdToggleShowsExtentBounds: sender [
-	self graphicView morph showExtentBounds: self graphicView morph showExtentBounds not.
-	sender name: self nameForToggleShowsExtentBounds
+	delegate cmdToggleShowsExtentBounds.
+	sender name: delegate nameForToggleShowsExtentBounds
 ]
 
 { #category : #'accessing menu' }
@@ -168,24 +76,24 @@ HogeApp >> debugMenu [
 				addItem: [ :item | 
 					item
 						name: 'Show configuration folder';
-						action: [ self cmdShowAppConfigDir: item ] ].
+						action: [ delegate cmdShowAppConfigDir ] ].
 			group
 				addItem: [ :item | 
 					item
-						name: self nameForToggleShowsAxisline;
+						name: delegate nameForToggleShowsAxisline;
 						autoRefresh: true;
 						action: [ self cmdToggleShowsAxisline: item ] ].
 			group
 				addItem: [ :item | 
 					item
-						name: self nameForToggleShowsExtentBounds;
+						name: delegate nameForToggleShowsExtentBounds;
 						autoRefresh: true;
 						action: [ self cmdToggleShowsExtentBounds: item ] ].
 			group
 				addItem: [ :item | 
 					item
 						name: 'Install sample graphics';
-						action: [ self cmdInstallSampleGraphics: item ] ].
+						action: [ delegate cmdInstallSampleGraphics ] ].
 			group
 				addItem: [ :item | 
 					item
@@ -197,17 +105,12 @@ HogeApp >> debugMenu [
 						addItem: [ :item | 
 							item
 								name: 'Toggle Canvas';
-								action: [ self cmdToggleCanvas: item ] ] ] ]
+								action: [ delegate cmdToggleCanvas ] ] ] ]
 ]
 
 { #category : #accessing }
 HogeApp >> document [
-	^ document value
-]
-
-{ #category : #accessing }
-HogeApp >> document: aHgGraphicDocumenmt [
- 	document value: aHgGraphicDocumenmt
+	^ delegate document
 ]
 
 { #category : #'accessing menu' }
@@ -221,7 +124,7 @@ HogeApp >> editMenu [
 						name: 'Undo';
 						shortcut: $z command;
 						action: [ 
-							self editingState undo ] ].
+							delegate cmdUndo ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #redo put: item.
@@ -229,7 +132,7 @@ HogeApp >> editMenu [
 						name: 'Redo';
 						shortcut: $z shift command ;
 						action: [ 
-							self editingState redo ] ].
+							delegate cmdRedo ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #clear put: item.
@@ -237,8 +140,7 @@ HogeApp >> editMenu [
 						name: 'Clear';
 						shortcut:Character backspace command;
 						action: [ 
-							self document addDeleteSelectionUndoRecord.
-							self document removeGraphics: self document selectedGraphics ] ].
+							delegate cmdClearGraphics ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #selectAll put: item.
@@ -246,22 +148,15 @@ HogeApp >> editMenu [
 						name: 'Select All';
 						shortcut: $a command ;
 						action: [ 
-							self document selectGraphics: self document graphics.
-							self graphicView morph clearOffCanvas; changed. "TODO: fire event" ] ].
+							delegate cmdSelectAll ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #deselectAll put: item.
 					item
 						name: 'Deselect All';
 						action: [ 
-							self document unselectGraphics: self document graphics.
-							self graphicView morph clearOffCanvas; changed. "TODO: event"  ] ].
+							delegate cmdDeselectAll ] ].
 					 ]
-]
-
-{ #category : #accessing }
-HogeApp >> editingState [
-	^ self document editingState
 ]
 
 { #category : #'accessing menu' }
@@ -274,19 +169,14 @@ HogeApp >> fileMenu [
 					item
 						name: 'Settings...';
 						action: [ 
-							SettingBrowser new
-								changePackageSet: {self class package};
-								open;
-								expandAll ] ] ]
+							delegate cmdOpenSettings ] ] ]
 ]
 
 { #category : #accessing }
 HogeApp >> graphicView [
 	^ graphicView
 		ifNil: [ 
-			graphicView := (HgGraphicViewMorph new
-				borderWidth: 0;
-				yourself) asSpecAdapter
+			graphicView := (delegate graphicViewMorph) asSpecAdapter
 				color: Color white;
 				vSpaceFill;
 				hSpaceFill ]
@@ -300,7 +190,7 @@ HogeApp >> graphicViewResized: anAnnouncement [
 
 { #category : #api }
 HogeApp >> initialExtent [
-	^ 800 @ 600
+	^ delegate initialExtent
 ]
 
 { #category : #initialization }
@@ -353,36 +243,16 @@ HogeApp >> initializePresenter [
 
 { #category : #initialization }
 HogeApp >> initializeWidgets [
-   document := nil asValueHolder.
+   delegate := HogeAppDelegate new.
 	self initializeMenuBar.
-	self document: (HgGraphicDocument new loadGraphics; yourself).
 	graphicView := self graphicView.
 	graphicView morph on: #mouseMove send: #updateMouseStatus: to: self.
-	graphicView morph document: self document.
 	self focusOrder add: graphicView
 ]
 
 { #category : #'accessing menu' }
 HogeApp >> menuBar [
 	^ menuBar
-]
-
-{ #category : #'dynamic caption' }
-HogeApp >> nameForToggleShowsAxisline [
-	^ '<1s> Axis lines'
-		expandMacrosWith:
-			(self graphicView morph showAxisLines
-				ifTrue: [ 'Hide' ]
-				ifFalse: [ 'Show' ])
-]
-
-{ #category : #'dynamic caption' }
-HogeApp >> nameForToggleShowsExtentBounds [
-	^ '<1s> Extent bounds'
-		expandMacrosWith:
-			(self graphicView morph showExtentBounds
-				ifTrue: [ 'Hide' ]
-				ifFalse: [ 'Show' ])
 ]
 
 { #category : #accessing }
@@ -392,7 +262,7 @@ HogeApp >> statusBar [
 
 { #category : #api }
 HogeApp >> title [
-	^ 'Points View'
+	^ delegate title
 ]
 
 { #category : #'accessing menu' }
@@ -431,5 +301,5 @@ HogeApp >> viewMenu [
 				addItem: [ :item | 
 					item
 						name: 'Fit';
-						action: [ self graphicView morph fit ] ] ]
+						action: [ delegate cmdViewFit ] ] ]
 ]
