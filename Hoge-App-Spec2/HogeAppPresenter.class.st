@@ -30,7 +30,19 @@ HogeAppPresenter class >> hogeMenuOn: aBuilder [
 		action: [ self new openWithSpec ]
 ]
 
-{ #category : #initialization }
+{ #category : #commands }
+HogeAppPresenter >> cmdToggleShowsAxisline: sender [
+	delegate cmdToggleShowsAxisline.
+	sender name: delegate nameForToggleShowsAxisline
+]
+
+{ #category : #commands }
+HogeAppPresenter >> cmdToggleShowsExtentBounds: sender [
+	delegate cmdToggleShowsExtentBounds.
+	sender name: delegate nameForToggleShowsExtentBounds
+]
+
+{ #category : #'accessing menu' }
 HogeAppPresenter >> debugMenu [
 	^ self newMenu
 		addGroup: [ :group | 
@@ -38,10 +50,79 @@ HogeAppPresenter >> debugMenu [
 				addItem: [ :item | 
 					item
 						name: 'Show configuration folder';
-						action: [ delegate cmdShowAppConfigDir ] ] ] 
+						action: [ delegate cmdShowAppConfigDir ] ].
+			group
+				addItem: [ :item | 
+					item
+						name: delegate nameForToggleShowsAxisline;
+						autoRefresh: true;
+						action: [ self cmdToggleShowsAxisline: item ] ].
+			group
+				addItem: [ :item | 
+					item
+						name: delegate nameForToggleShowsExtentBounds;
+						autoRefresh: true;
+						action: [ self cmdToggleShowsExtentBounds: item ] ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Install sample graphics';
+						action: [ delegate cmdInstallSampleGraphics ] ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Inspect document';
+						action: [ delegate cmdInspectDocument ] ].
+			delegate graphicViewMorph newCanvasEnabled
+				ifTrue: [ 
+					group
+						addItem: [ :item | 
+							item
+								name: 'Toggle Canvas';
+								action: [ delegate cmdToggleCanvas ] ] ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing menu' }
+HogeAppPresenter >> editMenu [
+	^ self newMenu
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					menuItemMap at: #undo put: item.
+					item
+						name: 'Undo';
+						shortcut: $z command;
+						action: [ delegate cmdUndo ] ].
+			group
+				addItem: [ :item | 
+					menuItemMap at: #redo put: item.
+					item
+						name: 'Redo';
+						shortcut: $z shift command;
+						action: [ delegate cmdRedo ] ].
+			group
+				addItem: [ :item | 
+					menuItemMap at: #clear put: item.
+					item
+						name: 'Clear';
+						shortcut: Character backspace command;
+						action: [ delegate cmdClearGraphics ] ].
+			group
+				addItem: [ :item | 
+					menuItemMap at: #selectAll put: item.
+					item
+						name: 'Select All';
+						shortcut: $a command;
+						action: [ delegate cmdSelectAll ] ].
+			group
+				addItem: [ :item | 
+					menuItemMap at: #deselectAll put: item.
+					item
+						name: 'Deselect All';
+						action: [ delegate cmdDeselectAll ] ] ]
+]
+
+{ #category : #'accessing menu' }
 HogeAppPresenter >> fileMenu [
 	^ self newMenu
 		addGroup: [ :group | 
@@ -69,6 +150,21 @@ HogeAppPresenter >> initializeMenuBar [
 					item
 						name: 'File';
 						subMenu: self fileMenu ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Edit';
+						subMenu: self editMenu ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'Tools';
+						subMenu: self toolsMenu ].
+			group
+				addItem: [ :item | 
+					item
+						name: 'View';
+						subMenu: self viewMenu ].
 			group
 				addItem: [ :item | 
 					item
@@ -114,6 +210,24 @@ HogeAppPresenter >> statusBar [
 	^ statusBar ifNil: [ statusBar := self instantiate:  HgStatusBar2 ]
 ]
 
+{ #category : #'accessing menu' }
+HogeAppPresenter >> toolsMenu [
+	^ self newMenu
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					menuItemMap at: #selectTool put: item.
+					item
+						name: 'Select';
+						action: [ delegate graphicViewMorph toolClass: HgSelectTool ] ].
+			group
+				addItem: [ :item | 
+					menuItemMap at: #pointTool put: item.
+					item
+						name: 'Point';
+						action: [ delegate graphicViewMorph toolClass: HgPointTool ] ] ]
+]
+
 { #category : #initialization }
 HogeAppPresenter >> updateMouseStatus: anEvent [
 	| hvPoint xyPoint |
@@ -121,4 +235,15 @@ HogeAppPresenter >> updateMouseStatus: anEvent [
 	xyPoint := delegate graphicViewMorph viewport transform invertPoint: hvPoint.
 	self statusBar setMouseXY: xyPoint.
 	self statusBar setMouseHV: hvPoint.
+]
+
+{ #category : #'accessing menu' }
+HogeAppPresenter >> viewMenu [
+	^ self newMenu
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					item
+						name: 'Fit';
+						action: [ delegate cmdViewFit ] ] ]
 ]

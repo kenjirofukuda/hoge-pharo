@@ -52,11 +52,6 @@ HogeApp class >> windowIcon [
 ]
 
 { #category : #commands }
-HogeApp >> cmdInspectDocument: sender [
-	self document inspect
-]
-
-{ #category : #commands }
 HogeApp >> cmdToggleShowsAxisline: sender [
 	delegate cmdToggleShowsAxisline.
 	sender name: delegate nameForToggleShowsAxisline
@@ -98,7 +93,7 @@ HogeApp >> debugMenu [
 				addItem: [ :item | 
 					item
 						name: 'Inspect document';
-						action: [ self cmdInspectDocument: item ] ].
+						action: [ delegate cmdInspectDocument ] ].
 			self graphicView morph newCanvasEnabled
 				ifTrue: [ 
 					group
@@ -262,7 +257,7 @@ HogeApp >> statusBar [
 
 { #category : #api }
 HogeApp >> title [
-	^ delegate title
+	^ delegate title, '(Spec)'
 ]
 
 { #category : #'accessing menu' }
