@@ -92,6 +92,11 @@ HogeApp >> debugMenu [
 			group
 				addItem: [ :item | 
 					item
+						name: 'Browse package';
+						action: [ delegate cmdBrowsePackage ] ].
+			group
+				addItem: [ :item | 
+					item
 						name: 'Inspect document';
 						action: [ delegate cmdInspectDocument ] ].
 			self graphicView morph newCanvasEnabled
@@ -101,6 +106,11 @@ HogeApp >> debugMenu [
 							item
 								name: 'Toggle Canvas';
 								action: [ delegate cmdToggleCanvas ] ] ] ]
+]
+
+{ #category : #'as yet unclassified' }
+HogeApp >> delegate [
+	^ delegate
 ]
 
 { #category : #accessing }
@@ -213,6 +223,14 @@ HogeApp >> initializeMenuBar [
 					item
 						name: 'View';
 						subMenu: self viewMenu ].
+			#HogeRoassal3Spec asClassIfPresent: [ :clazz | 
+				group
+				addItem: [ :item | 
+					clazz instance 
+						perform: #specUI: with: self;
+						perform: #installMenuOn: with: item  ].
+				].
+			
 			group
 				addItem: [ :item | 
 					item

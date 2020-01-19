@@ -74,6 +74,11 @@ KFViewport >> announcer [
 	^ announcer ifNil: [ announcer := Announcer new ]
 ]
 
+{ #category : #printing }
+KFViewport >> attributesString [
+	^ String streamContents: [ :s | self printAttributesOn: s ]
+]
+
 { #category : #transforms }
 KFViewport >> basicTransform [
 	^ basicTransform ifNil: [ basicTransform := self lookupBasicTransform ].
@@ -290,6 +295,18 @@ KFViewport >> portCenter [
 { #category : #accessing }
 KFViewport >> portCenter: aPoint [
 	portCenter value: aPoint x @ (self pixelBounds extent y - aPoint y)
+]
+
+{ #category : #printing }
+KFViewport >> printAttributesOn: aStream [
+	| roudValue |
+	roudValue := 0.0001s.
+	aStream << 'scale: '.
+	(self viewScale roundTo: roudValue) printOn: aStream.
+	aStream cr.
+	aStream << 'center: '.
+	(self viewCenter roundTo: roudValue) printOn: aStream.
+	
 ]
 
 { #category : #private }
