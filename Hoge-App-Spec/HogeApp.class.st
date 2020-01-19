@@ -226,7 +226,7 @@ HogeApp >> initializeMenuBar [
 			#HogeRoassal3Spec asClassIfPresent: [ :clazz | 
 				group
 				addItem: [ :item | 
-					clazz instance 
+					clazz new 
 						perform: #specUI: with: self;
 						perform: #installMenuOn: with: item  ].
 				].
