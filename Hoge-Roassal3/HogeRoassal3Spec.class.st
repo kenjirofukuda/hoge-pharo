@@ -18,34 +18,48 @@ HogeRoassal3Spec class >> instance [
 { #category : #'menu building' }
 HogeRoassal3Spec >> adjustViewportToCanvas: aRSCanvas [
 	aRSCanvas extent: self viewport extent.
-	aRSCanvas camera position: self viewport viewCenter.
-	aRSCanvas camera scale: self viewport viewScale.
+	aRSCanvas camera zoomToFit: aRSCanvas extent rectangle: self viewport worldViewBounds.
+	"aRSCanvas camera position: self viewport viewCenter.
+	aRSCanvas camera scale: self viewport viewScale."
 ]
 
 { #category : #'menu building' }
 HogeRoassal3Spec >> cmdViewGraphics [
-	| canvas updateBlock |
-	self flag: 'TODO: Flip Vertiacal'. 
-	canvas := RSCanvas new.
+	| canvas updateBlock createBlock wantsCreate |
+	canvas := HgRSCanvas new.
 	self adjustViewportToCanvas: canvas.
 	updateBlock := [ self adjustViewportToCanvas: canvas.
-	(canvas shapes select: [ :e | e isKindOf: RSEllipse ])
+	(canvas shapes select: [ :e | e model isKindOf: HgPointGraphic ])
 		do: [ :e | 
-			e size: e model handleSize / canvas camera scale.
+			self setCosmetic: e.
 			canvas signalUpdate ] ].
+	wantsCreate := true.
 	self viewport announcer when: #viewTransformChanged do: updateBlock.
+	createBlock := [ canvas shapes copy do: #remove.
 	self document graphics
 		do: [ :m | 
 			| e |
 			e := RSEllipse new.
 			e model: m.
+			e withBorder.
 			e size: m handleSize.
-			e color: Color black.
+			e color: Color transparent.
 			e position: m origin.
-			canvas addShape: e ].
+			canvas addShape: e ] ].
+	self document graphicsProperty
+		whenChangedDo: [ 
+			wantsCreate := true.
+			self inform: 'Updated Graphics!!!' ].
 	canvas newAnimation
+		repeat;
 		duration: 0.1 seconds;
-		onStepDo: [ :t | updateBlock value ].
+		onStepDo: [ :t | 
+			wantsCreate
+				ifTrue: [ 
+					createBlock value.
+					Time now traceCr.
+					wantsCreate := false ].
+			updateBlock value ].
 	^ (canvas
 		openBeforeMorphBlock: [ :morph | 
 	morph changeNoLayout.
@@ -66,6 +80,15 @@ HogeRoassal3Spec >> installMenuOn: aMenuItemPresenter [
 		name: 'Roassal3';
 		subMenu: self subMenu.
 		
+]
+
+{ #category : #'menu building' }
+HogeRoassal3Spec >> setCosmetic: aRSShape [
+	| scale |
+	aRSShape canvas ifNil: [ ^ self ].
+	scale := aRSShape canvas camera scale.
+	aRSShape size: aRSShape model pointDisplaySize / scale.
+	aRSShape border width: 1 / scale
 ]
 
 { #category : #accessing }

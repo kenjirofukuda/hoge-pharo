@@ -51,7 +51,12 @@ HgPointGraphic >> origin: aPoint [
 
 { #category : #drawing }
 HgPointGraphic >> pointDisplayHalfSize [
-	^ HogeAppSettings instance pointDisplaySize // 2 
+	^ self pointDisplaySize // 2 
+]
+
+{ #category : #drawing }
+HgPointGraphic >> pointDisplaySize [
+	^ HogeAppSettings instance pointDisplaySize
 ]
 
 { #category : #printing }
