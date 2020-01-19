@@ -24,7 +24,12 @@ HgGraphic >> drawOn: aCanvas viewport: aViewport [
 
 { #category : #drawing }
 HgGraphic >> halfHandleSize [
-	^ HogeAppSettings instance handleSize // 2.
+	^ self handleSize // 2.
+]
+
+{ #category : #drawing }
+HgGraphic >> handleSize [
+	^ HogeAppSettings instance handleSize
 ]
 
 { #category : #accessing }

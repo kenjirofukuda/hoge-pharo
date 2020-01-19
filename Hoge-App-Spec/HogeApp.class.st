@@ -93,7 +93,7 @@ HogeApp >> debugMenu [
 				addItem: [ :item | 
 					item
 						name: 'Browse package';
-						action: [ delegate cmdBrowsePackage ] ].
+						action: [ self class package browse ] ].
 			group
 				addItem: [ :item | 
 					item

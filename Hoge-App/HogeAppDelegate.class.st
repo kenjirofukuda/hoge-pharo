@@ -70,11 +70,6 @@ HogeAppDelegate >> cmdBrowseClass: aClass [
 ]
 
 { #category : #commands }
-HogeAppDelegate >> cmdBrowsePackage [
-	self class package browse
-]
-
-{ #category : #commands }
 HogeAppDelegate >> cmdClearGraphics [
 	self document addDeleteSelectionUndoRecord.
 	self document removeGraphics: self document selectedGraphics
