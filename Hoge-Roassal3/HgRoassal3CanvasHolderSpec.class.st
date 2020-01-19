@@ -1,5 +1,5 @@
 Class {
-	#name : #HgRoassal3CanvasHolder,
+	#name : #HgRoassal3CanvasHolderSpec,
 	#superclass : #Object,
 	#instVars : [
 		'canvas',
@@ -10,13 +10,13 @@ Class {
 }
 
 { #category : #private }
-HgRoassal3CanvasHolder >> adjustViewport [
+HgRoassal3CanvasHolderSpec >> adjustViewport [
 	"canvas extent: self viewport extent."
 	canvas camera zoomToFit: canvas extent rectangle: self viewport worldViewBounds.
 ]
 
 { #category : #private }
-HgRoassal3CanvasHolder >> buildShapes [	
+HgRoassal3CanvasHolderSpec >> buildShapes [	
 	canvas shapes copy do: #remove.
 	self document graphics
 		do: [ :m | 
@@ -26,12 +26,12 @@ HgRoassal3CanvasHolder >> buildShapes [
 ]
 
 { #category : #accessing }
-HgRoassal3CanvasHolder >> canvas [ 
+HgRoassal3CanvasHolderSpec >> canvas [ 
 	^ canvas
 ]
 
 { #category : #private }
-HgRoassal3CanvasHolder >> createPointShape: aHgPointGraphic [
+HgRoassal3CanvasHolderSpec >> createPointShape: aHgPointGraphic [
 	| e |
 	e := RSEllipse new.
 	e model: aHgPointGraphic.
@@ -43,29 +43,57 @@ HgRoassal3CanvasHolder >> createPointShape: aHgPointGraphic [
 ]
 
 { #category : #accessing }
-HgRoassal3CanvasHolder >> document [
+HgRoassal3CanvasHolderSpec >> document [
 	^ specUI delegate document
 ]
 
 { #category : #private }
-HgRoassal3CanvasHolder >> graphicsChanged: aValueChanged [ 
+HgRoassal3CanvasHolderSpec >> graphicsChanged: aValueChanged [ 
 	wantsCreate := true.
 ]
 
 { #category : #initialization }
-HgRoassal3CanvasHolder >> initialize [
+HgRoassal3CanvasHolderSpec >> initialize [
 	canvas := HgRSCanvas new.
 ]
 
+{ #category : #accessing }
+HgRoassal3CanvasHolderSpec >> masterWindow [ 
+	^ specUI window window.
+]
+
 { #category : #running }
-HgRoassal3CanvasHolder >> run [
+HgRoassal3CanvasHolderSpec >> openWindow [
 	| window |
+	window := canvas
+		openBeforeMorphBlock: [ :morph | self setupAthensMorph: morph ].
+	window
+		setLabel: specUI title , '(Roassal3), ' , window identityHash printString.
+	"window isResizeable: false."
+	window announcer
+		when: WindowClosed
+		do: [ self document graphicsProperty announcer unsubscribe: self ].
+	self masterWindow announcer
+		when: WindowClosed
+		do: [ window delete ].
+	self masterWindow announcer
+		when: WindowResizing
+		do: [ :ann | 
+			self flag: 'TODO: canvas not strict same. status height, menubar height lessen'.
+			window extent: ann newSize ].
+	^ window
+]
+
+{ #category : #running }
+HgRoassal3CanvasHolderSpec >> run [
 	self adjustViewport.
 	wantsCreate := true.
 	self viewport announcer
 		when: #viewTransformChanged
 		do: [ self updateCanvas ].
-	self document graphicsProperty whenChangedSend: #graphicsChanged: to: self.
+	self document graphicsProperty
+		whenChangedSend: #graphicsChanged:
+		to: self.
 	canvas newAnimation
 		repeat;
 		duration: 0.2 seconds;
@@ -74,22 +102,11 @@ HgRoassal3CanvasHolder >> run [
 				ifTrue: [ self buildShapes.
 					wantsCreate := false ].
 			self updateCanvas ].
-	window := canvas
-		openBeforeMorphBlock: [ :morph | 
-			self setupAthensMorph: morph ].
-	window setLabel: specUI title , '(Roassal3), ', window identityHash printString.
-	"window isResizeable: false."
-	window announcer
-		when: WindowClosed
-		do: [ self document graphicsProperty announcer unsubscribe: self ].
-	specUI window window announcer
-		when: WindowClosed
-		do: [ window delete ].
-	^ window
+	^ self openWindow 
 ]
 
 { #category : #utility }
-HgRoassal3CanvasHolder >> setCosmetic: aRSShape [
+HgRoassal3CanvasHolderSpec >> setCosmetic: aRSShape [
 	| scale |
 	aRSShape canvas ifNil: [ ^ self ].
 	scale := aRSShape canvas camera scale.
@@ -98,21 +115,21 @@ HgRoassal3CanvasHolder >> setCosmetic: aRSShape [
 ]
 
 { #category : #running }
-HgRoassal3CanvasHolder >> setupAthensMorph: aRSAthensMorph [
-"	canvas when: RSExtentChangedEvent do: [ aRSAthensMorph extent: specUI graphicView extent ].
+HgRoassal3CanvasHolderSpec >> setupAthensMorph: aRSAthensMorph [
+"	canvas when: RSExtentChangedEvent do: [ aRSAthensMorph extent: specUI graphicView extent ]."
 	aRSAthensMorph changeNoLayout.
-	aRSAthensMorph vResizing: #rigid.
-	aRSAthensMorph hResizing: #rigid.	
-	aRSAthensMorph extent: specUI graphicView extent"
+	"aRSAthensMorph vResizing: #rigid."
+	"aRSAthensMorph hResizing: #rigid.	"
+	aRSAthensMorph extent: specUI graphicView extent
 ]
 
 { #category : #accessing }
-HgRoassal3CanvasHolder >> specUI: aHogeApp [
+HgRoassal3CanvasHolderSpec >> specUI: aHogeApp [
 	specUI := aHogeApp.
 ]
 
 { #category : #private }
-HgRoassal3CanvasHolder >> updateCanvas [
+HgRoassal3CanvasHolderSpec >> updateCanvas [
 	self adjustViewport.
 	(canvas shapes select: [ :e | e model isKindOf: HgPointGraphic ])
 		do: [ :e | self setCosmetic: e ].
@@ -120,6 +137,6 @@ HgRoassal3CanvasHolder >> updateCanvas [
 ]
 
 { #category : #accessing }
-HgRoassal3CanvasHolder >> viewport [ 
+HgRoassal3CanvasHolderSpec >> viewport [ 
 	^ specUI graphicView morph viewport.
 ]

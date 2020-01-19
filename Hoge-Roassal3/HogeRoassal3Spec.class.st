@@ -15,7 +15,7 @@ HogeRoassal3Spec >> adjustViewportToCanvas: aRSCanvas [
 
 { #category : #'menu building' }
 HogeRoassal3Spec >> cmdViewGraphics [
-	HgRoassal3CanvasHolder new
+	HgRoassal3CanvasHolderSpec new
 		specUI: specUI;
 		run
 ]
