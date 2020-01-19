@@ -19,22 +19,17 @@ HogeRoassal3Spec class >> instance [
 HogeRoassal3Spec >> adjustViewportToCanvas: aRSCanvas [
 	aRSCanvas extent: self viewport extent.
 	aRSCanvas camera zoomToFit: aRSCanvas extent rectangle: self viewport worldViewBounds.
-	"aRSCanvas camera position: self viewport viewCenter.
-	aRSCanvas camera scale: self viewport viewScale."
 ]
 
 { #category : #'menu building' }
 HogeRoassal3Spec >> cmdViewGraphics [
-	| canvas updateBlock createBlock wantsCreate |
+	| canvas createBlock wantsCreate window |
 	canvas := HgRSCanvas new.
 	self adjustViewportToCanvas: canvas.
-	updateBlock := [ self adjustViewportToCanvas: canvas.
-	(canvas shapes select: [ :e | e model isKindOf: HgPointGraphic ])
-		do: [ :e | 
-			self setCosmetic: e.
-			canvas signalUpdate ] ].
 	wantsCreate := true.
-	self viewport announcer when: #viewTransformChanged do: updateBlock.
+	self viewport announcer
+		when: #viewTransformChanged
+		do: [ self updateCanvas: canvas ].
 	createBlock := [ canvas shapes copy do: #remove.
 	self document graphics
 		do: [ :m | 
@@ -47,26 +42,29 @@ HogeRoassal3Spec >> cmdViewGraphics [
 			e position: m origin.
 			canvas addShape: e ] ].
 	self document graphicsProperty
-		whenChangedDo: [ 
-			wantsCreate := true.
-			self inform: 'Updated Graphics!!!' ].
+		whenChangedDo: [ wantsCreate := true.
+			self inform: 'Updated Graphics!!!', self identityHash printString].
 	canvas newAnimation
 		repeat;
-		duration: 0.1 seconds;
+		duration: 0.2 seconds;
 		onStepDo: [ :t | 
 			wantsCreate
-				ifTrue: [ 
-					createBlock value.
-					Time now traceCr.
+				ifTrue: [ createBlock value.
 					wantsCreate := false ].
-			updateBlock value ].
-	^ (canvas
+			self updateCanvas: canvas ].
+	window := canvas
 		openBeforeMorphBlock: [ :morph | 
-	morph changeNoLayout.
-	morph extent: specUI graphicView extent ])
-		setLabel: specUI title , '(Roassal3)';
-		isResizeable: false;
-		yourself
+			morph changeNoLayout.
+			morph extent: specUI graphicView extent ].
+	window setLabel: specUI title , '(Roassal3), ', window identityHash printString.
+	window isResizeable: false.
+	window announcer
+		when: WindowClosed
+		do: [ self inform: 'FIXME: unsubscribe', window identityHash printString ].
+	specUI window window announcer
+		when: WindowClosed
+		do: [ window delete ].
+	^ window
 ]
 
 { #category : #'menu building' }
@@ -117,6 +115,16 @@ HogeRoassal3Spec >> subMenu [
 							item
 								name: 'Browse package';
 								action: [ self class package browse ] ] ] 
+]
+
+{ #category : #'menu building' }
+HogeRoassal3Spec >> updateCanvas: aHgRSCanvas [
+self adjustViewportToCanvas: aHgRSCanvas.
+	(aHgRSCanvas shapes select: [ :e | e model isKindOf: HgPointGraphic ])
+		do: [ :e | 
+			self setCosmetic: e.
+			 ] .
+	aHgRSCanvas signalUpdate
 ]
 
 { #category : #'menu building' }
