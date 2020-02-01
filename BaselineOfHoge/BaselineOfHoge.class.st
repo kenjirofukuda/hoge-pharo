@@ -15,10 +15,8 @@ BaselineOfHoge >> baseline: spec [
 				with: [ 
 					spec repository: 'github://kenjirofukuda/imaging-pharo:master' ].
 			spec
-				configuration: 'NeoCSV'
-				with: [ spec
-						versionString: #stable;
-						repository: 'http://mc.stfx.eu/Neo' ].
+				baseline: 'NeoCSV'
+				with: [ spec repository: 'github://svenvc/NeoCSV/repository' ].
 			spec
 				baseline: 'OSWindows'
 				with: [ 
