@@ -16,7 +16,7 @@ HgRSAthensMorph >> drawShapes [
 		camera := roassalCanvas camera.
 		athensCanvas pathTransform
 			translateBy: (self extent / 2) asFloatPoint;
-			scaleBy: ((1.0 @ -1.0) * camera scale asFloat);
+			scaleBy: ((self flipedScale) * camera scale asFloat);
 			translateBy: camera position negated asFloatPoint.
 		renderer canvas: athensCanvas.
 		canvasRect := Rectangle 
@@ -35,4 +35,14 @@ HgRSAthensMorph >> drawShapes [
 		self showRectanglesIfNecessary: roassalCanvas fixedShapes. ]
 		
 
+]
+
+{ #category : #accessing }
+HgRSAthensMorph >> flipedScale [
+	^ self yFliped ifTrue: [ 1.0 @ -1.0 ] ifFalse: [ 1.0 @ 1.0 ]
+]
+
+{ #category : #accessing }
+HgRSAthensMorph >> yFliped [
+	^ self canvas yFliped
 ]

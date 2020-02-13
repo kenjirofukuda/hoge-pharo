@@ -55,6 +55,7 @@ HgRoassal3CanvasHolderSpec >> graphicsChanged: aValueChanged [
 { #category : #initialization }
 HgRoassal3CanvasHolderSpec >> initialize [
 	canvas := HgRSCanvas new.
+	canvas yFliped: true.
 ]
 
 { #category : #accessing }
