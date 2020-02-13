@@ -1,8 +1,52 @@
 Class {
 	#name : #HgRSAthensMorph,
 	#superclass : #RSAthensMorph,
+	#instVars : [
+		'offCanvas'
+	],
 	#category : #'Hoge-Roassal3'
 }
+
+{ #category : #'session management' }
+HgRSAthensMorph >> checkSession [
+	"The mechanism of session is useful in case you have a visualization open, save-and-quit the image, and open the image again.
+	Naturally, you wish to see the visualization again. The session mechanism makes sure that low-level resources that belongs to Cairo are properly recreated"
+	session == Smalltalk session ifTrue: [ ^ self ].
+	surface := nil.
+	offCanvas := nil.
+	self createSurface.
+	roassalCanvas shapes do: #sessionChanged.
+	roassalCanvas fixedShapes do: #sessionChanged.
+]
+
+{ #category : #drawing }
+HgRSAthensMorph >> drawOn: aCanvas [
+	"Draw the whole visualization"
+
+	isDrawing
+		ifTrue: [ ^ self ].
+	isDrawing := true.
+	[ self checkSession.
+	self recreateSurfaceIfNecessary.
+	aCanvas fillRectangle: bounds color: roassalCanvas color.
+	roassalCanvas playAnimations.
+	offCanvas
+		ifNil: [ 
+			self drawShapes.
+			offCanvas := FormCanvas extent: self innerBounds extent depth: 32.
+			surface hasBeenFreed
+				ifTrue: [ self createSurface ].
+			[ offCanvas
+				image: surface asForm
+				at: 0 @ 0
+				sourceRect: (0 @ 0 extent: surface extent)
+				rule: 34 ]
+				on: Exception
+				do: [ :ex |  ] ].
+	offCanvas
+		ifNotNil: [ aCanvas drawImage: offCanvas form at: self innerBounds origin ] ]
+		ensure: [ isDrawing := false ]
+]
 
 { #category : #drawing }
 HgRSAthensMorph >> drawShapes [
@@ -40,6 +84,17 @@ HgRSAthensMorph >> drawShapes [
 { #category : #accessing }
 HgRSAthensMorph >> flipedScale [
 	^ self yFliped ifTrue: [ 1.0 @ -1.0 ] ifFalse: [ 1.0 @ 1.0 ]
+]
+
+{ #category : #removing }
+HgRSAthensMorph >> removeOffCanvas [
+	offCanvas := nil.
+]
+
+{ #category : #signaling }
+HgRSAthensMorph >> signalUpdate [
+	self removeOffCanvas.
+	super signalUpdate
 ]
 
 { #category : #accessing }

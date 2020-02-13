@@ -12,12 +12,25 @@ HgRSCanvas >> cameraClass [
 	^ HgRSCamera
 ]
 
+{ #category : #accessing }
+HgRSCanvas >> clipedShapes [
+	| canvasRect |
+	canvasRect := Rectangle
+		rsCenter: self camera position
+		extent: self extent / camera scale.
+	^ self shapes
+		select:
+			[ :trachelShape | trachelShape encompassingRectangle intersects: canvasRect ]
+]
+
 { #category : #'morph creation' }
 HgRSCanvas >> createMorph [
 	"Create a Morph that contains myself."
 	morph := HgRSAthensMorph new. 
-	morph renderer: RSAthensRenderer new.
+	morph renderer: HgRSAthensRenderer new.
 	morph canvas: self.
+	self announcer when: RSScaleChangedEvent do: [ morph removeOffCanvas ].
+	self announcer when: RSPositionChangedEvent do: [ morph removeOffCanvas ].	
 	^ morph
 ]
 
