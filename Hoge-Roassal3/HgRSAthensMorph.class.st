@@ -34,6 +34,7 @@ HgRSAthensMorph >> drawOn: aCanvas [
 		ifNil: [ 
 			self drawShapes.
 			offCanvas := FormCanvas extent: self innerBounds extent depth: 32.
+			offCanvas fillRectangle: (0 @ 0 extent: bounds extent)color: roassalCanvas color.
 			surface hasBeenFreed
 				ifTrue: [ self createSurface ].
 			[ offCanvas
