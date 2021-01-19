@@ -29,13 +29,14 @@ HogeApp class >> defaultSpec [
 ]
 
 { #category : #'menu items' }
-HogeApp class >> hogeMenuOn: aBuilder [ 
+HogeApp class >> hogeMenuOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: #Hoge)
-		order: 5.0;
-		help: 'HogeApp open';
+	(aBuilder item: #'Hoge Classic')
+		order: 5000;
+		parent: #Tools;
+		help: 'Hoge Application Spec 1.0';
 		icon: HogeAppDelegate appIcon;
-		action: [self open].
+		action: [ self open ]
 ]
 
 { #category : #example }

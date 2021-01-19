@@ -23,9 +23,11 @@ HogeAppPresenter class >> defaultSpec [
 { #category : #'menu items' }
 HogeAppPresenter class >> hogeMenuOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: #Hoge2)
-		order: 5.0;
-		help: 'HogeApp(Spec2) open';
+	(aBuilder item: #Hoge)
+		order: 5000;
+		parent: #Tools;
+		help: 'Hoge Application Spec 2.0';
+		icon: HogeAppDelegate appIcon;
 		action: [ self new openWithSpec ]
 ]
 
