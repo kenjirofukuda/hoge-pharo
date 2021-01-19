@@ -117,11 +117,16 @@ HgRoassal3CanvasHolderSpec >> setCosmetic: aRSShape [
 
 { #category : #running }
 HgRoassal3CanvasHolderSpec >> setupAthensMorph: aRSAthensMorph [
-"	canvas when: RSExtentChangedEvent do: [ aRSAthensMorph extent: specUI graphicView extent ]."
+	"	canvas when: RSExtentChangedEvent do: [ aRSAthensMorph extent: specUI graphicView extent ]."
+
 	aRSAthensMorph changeNoLayout.
 	"aRSAthensMorph vResizing: #rigid."
 	"aRSAthensMorph hResizing: #rigid.	"
-	aRSAthensMorph extent: specUI graphicView extent
+	aRSAthensMorph
+		extent:
+			(specUI graphicView extent
+				ifNil: [ specUI graphicView morph extent ] "SpPresenter Bug"
+				ifNotNil: [ specUI graphicView extent ]) "MorphicGenericAdapter ok"
 ]
 
 { #category : #accessing }

@@ -2,7 +2,6 @@ Class {
 	#name : #HogeAppPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'graphicsView',
 		'menuItemMap',
 		'menuBar',
 		'delegate',
@@ -87,6 +86,11 @@ HogeAppPresenter >> debugMenu [
 								action: [ delegate cmdToggleCanvas ] ] ] ]
 ]
 
+{ #category : #accessing }
+HogeAppPresenter >> delegate [
+	^ delegate
+]
+
 { #category : #'accessing menu' }
 HogeAppPresenter >> editMenu [
 	^ self newMenu
@@ -140,6 +144,11 @@ HogeAppPresenter >> fileMenu [
 							delegate cmdOpenSettings ] ] ]
 ]
 
+{ #category : #accessing }
+HogeAppPresenter >> graphicView [
+	^ graphicView 
+]
+
 { #category : #'events handling' }
 HogeAppPresenter >> graphicViewResized: anAnnouncement [
 	self statusBar setSizeWH: graphicView morph extent.
@@ -170,7 +179,13 @@ HogeAppPresenter >> initializeMenuBar [
 					item
 						name: 'View';
 						subMenu: self viewMenu ].
-			group
+			#HogeRoassal3Spec2 asClassIfPresent: [ :clazz | 
+				group
+				addItem: [ :item | 
+					clazz new 
+						perform: #specUI: with: self;
+						perform: #installMenuOn: with: item  ].
+				].			group
 				addItem: [ :item | 
 					item
 						name: 'Debug';
@@ -213,6 +228,11 @@ HogeAppPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 HogeAppPresenter >> statusBar [
 	^ statusBar ifNil: [ statusBar := self instantiate:  HgStatusBar2 ]
+]
+
+{ #category : #TOREMOVE }
+HogeAppPresenter >> title [
+	^ delegate title, '(Spec)'
 ]
 
 { #category : #'accessing menu' }

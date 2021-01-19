@@ -108,7 +108,7 @@ HogeApp >> debugMenu [
 								action: [ delegate cmdToggleCanvas ] ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 HogeApp >> delegate [
 	^ delegate
 ]
