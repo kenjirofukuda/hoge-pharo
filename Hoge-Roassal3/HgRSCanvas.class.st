@@ -16,7 +16,7 @@ HgRSCanvas >> cameraClass [
 HgRSCanvas >> clipedShapes [
 	| canvasRect |
 	canvasRect := Rectangle
-		rsCenter: self camera position
+		floatCenter self camera position
 		extent: self extent / camera scale.
 	^ self shapes
 		select:

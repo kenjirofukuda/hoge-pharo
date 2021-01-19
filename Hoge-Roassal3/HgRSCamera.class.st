@@ -10,6 +10,6 @@ HgRSCamera >> zoomToFit: anExtent rectangle: rect [
 	sc := anExtent / (rect extent max: 0.01 @ 0.01).
 	sc := sc x min: sc y.
 	self 
-		translateTo: rect rsCenter;
+		translateTo: rect floatCenter;
 		scale: sc.
 ]
