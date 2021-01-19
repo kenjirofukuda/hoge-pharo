@@ -71,6 +71,11 @@ HogeAppPresenter >> debugMenu [
 			group
 				addItem: [ :item | 
 					item
+						name: 'Browse package';
+						action: [ self class package browse ] ].					
+			group
+				addItem: [ :item | 
+					item
 						name: 'Inspect document';
 						action: [ delegate cmdInspectDocument ] ].
 			delegate graphicViewMorph newCanvasEnabled
