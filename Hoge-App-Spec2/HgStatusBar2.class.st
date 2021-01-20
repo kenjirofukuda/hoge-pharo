@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #specs }
+HgStatusBar2 class >> adapterName [
+	^ #StatusBarAdapter
+]
+
+{ #category : #specs }
 HgStatusBar2 class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add: #mouseXY;

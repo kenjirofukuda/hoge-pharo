@@ -45,47 +45,46 @@ HogeAppPresenter >> cmdToggleShowsExtentBounds: sender [
 
 { #category : #'accessing menu' }
 HogeAppPresenter >> debugMenu [
-	^ self newMenu
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					item
-						name: 'Show configuration folder';
-						action: [ delegate cmdShowAppConfigDir ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: delegate nameForToggleShowsAxisline;
-						autoRefresh: true;
-						action: [ self cmdToggleShowsAxisline: item ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: delegate nameForToggleShowsExtentBounds;
-						autoRefresh: true;
-						action: [ self cmdToggleShowsExtentBounds: item ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Install sample graphics';
-						action: [ delegate cmdInstallSampleGraphics ] ].
-			group
-				addItem: [ :item | 
-					item
-						name: 'Browse package';
-						action: [ self class package browse ] ].					
-			group
-				addItem: [ :item | 
-					item
-						name: 'Inspect document';
-						action: [ delegate cmdInspectDocument ] ].
-			delegate graphicViewMorph newCanvasEnabled
+
+	^ self newMenu addGroup: [ :group | 
+		  group addItem: [ :item | 
+			  item
+				  name: 'Show configuration folder';
+				  action: [ delegate cmdShowAppConfigDir ] ].
+		  group addItem: [ :item | 
+			  item
+				  name: delegate nameForToggleShowsAxisline;
+				  autoRefresh: true;
+				  action: [ self cmdToggleShowsAxisline: item ] ].
+		  group addItem: [ :item | 
+			  item
+				  name: delegate nameForToggleShowsExtentBounds;
+				  autoRefresh: true;
+				  action: [ self cmdToggleShowsExtentBounds: item ] ].
+		  group addItem: [ :item | 
+			  item
+				  name: 'Install sample graphics';
+				  action: [ delegate cmdInstallSampleGraphics ] ].
+		  group addItem: [ :item | 
+			  item
+				  name: 'Browse package';
+				  action: [ self class package browse ] ].
+		  group addItem: [ :item | 
+			  item
+				  name: 'Inspect document';
+				  action: [ delegate cmdInspectDocument ] ].
+
+		  group addItem: [ :item | 
+			  item
+				  name: 'Inspect presenter';
+				  action: [ self inspect ] ].
+
+		  delegate graphicViewMorph newCanvasEnabled 
 				ifTrue: [ 
-					group
-						addItem: [ :item | 
-							item
-								name: 'Toggle Canvas';
-								action: [ delegate cmdToggleCanvas ] ] ] ]
+			  		group addItem: [ :item | 
+				  		item
+					  		name: 'Toggle Canvas';
+					  		action: [ delegate cmdToggleCanvas ] ] ] ]
 ]
 
 { #category : #accessing }
@@ -222,11 +221,17 @@ HogeAppPresenter >> initializeWidgets [
 
 { #category : #initialization }
 HogeAppPresenter >> initializeWindow: aWindowPresenter [
+	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		initialExtent: delegate initialExtent;
-		menu: menuBar;
-		statusBar: statusBar; 
+		menu: self menuBar;
+		statusBar: self statusBar; 
 		title: delegate title.
+]
+
+{ #category : #accessing }
+HogeAppPresenter >> menuBar [
+	^ menuBar
 ]
 
 { #category : #accessing }
