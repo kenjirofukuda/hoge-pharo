@@ -94,6 +94,8 @@ HogeAppPresenter >> delegate [
 
 { #category : #'accessing menu' }
 HogeAppPresenter >> editMenu [
+	| modifire |
+	modifire := OSPlatform current defaultModifier.
 	^ self newMenu
 		addGroup: [ :group | 
 			group
@@ -101,28 +103,28 @@ HogeAppPresenter >> editMenu [
 					menuItemMap at: #undo put: item.
 					item
 						name: 'Undo';
-						shortcut: $z command;
+						shortcut: modifire + $z;
 						action: [ delegate cmdUndo ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #redo put: item.
 					item
 						name: 'Redo';
-						shortcut: $z shift command;
+						shortcut: modifire + $z shift;
 						action: [ delegate cmdRedo ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #clear put: item.
 					item
 						name: 'Clear';
-						shortcut: Character backspace command;
+						shortcut: modifire + Character backspace;
 						action: [ delegate cmdClearGraphics ] ].
 			group
 				addItem: [ :item | 
 					menuItemMap at: #selectAll put: item.
 					item
 						name: 'Select All';
-						shortcut: $a command;
+						shortcut: modifire + $a;
 						action: [ delegate cmdSelectAll ] ].
 			group
 				addItem: [ :item | 
@@ -134,6 +136,8 @@ HogeAppPresenter >> editMenu [
 
 { #category : #'accessing menu' }
 HogeAppPresenter >> fileMenu [
+	| modifire |
+	modifire := OSPlatform current defaultModifier.
 	^ self newMenu
 		addGroup: [ :group | 
 			group
@@ -141,6 +145,7 @@ HogeAppPresenter >> fileMenu [
 					menuItemMap at: #settings put: item.
 					item
 						name: 'Settings...';
+						shortcut: modifire + $,;
 						action: [ 
 							delegate cmdOpenSettings ] ] ]
 ]
