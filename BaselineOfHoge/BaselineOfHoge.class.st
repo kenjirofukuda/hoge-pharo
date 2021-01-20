@@ -14,11 +14,8 @@ BaselineOfHoge >> baseline: spec [
 
 { #category : #baselines }
 BaselineOfHoge >> baselineForCommon: spec [
-	spec
-		for: #common
-		do: [ 
-			self dependencies: spec.
-			self registerPackages: spec ]
+	self dependencies: spec.
+	self registerPackages: spec
 ]
 
 { #category : #baselines }
