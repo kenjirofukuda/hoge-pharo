@@ -1,6 +1,6 @@
 Class {
 	#name : #HgStatusBar2,
-	#superclass : #SpPresenter,
+	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
 		'mouseXY',
 		'mouseHV',

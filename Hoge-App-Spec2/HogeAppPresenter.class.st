@@ -14,9 +14,9 @@ Class {
 { #category : #specs }
 HogeAppPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #menuBar height: self toolbarHeight;
+		"add: #menuBar height: self toolbarHeight;"
 		add: #graphicView;
-		add: #statusBar height: HogeAppDelegate statusbarHeight;
+		"add: #statusBar height: HogeAppDelegate statusbarHeight;"
 		yourself
 ]
 
@@ -224,17 +224,14 @@ HogeAppPresenter >> initializeWidgets [
 HogeAppPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		initialExtent: delegate initialExtent;
+		menu: menuBar;
+		statusBar: statusBar; 
 		title: delegate title.
 ]
 
 { #category : #accessing }
 HogeAppPresenter >> statusBar [
 	^ statusBar ifNil: [ statusBar := self instantiate:  HgStatusBar2 ]
-]
-
-{ #category : #TOREMOVE }
-HogeAppPresenter >> title [
-	^ delegate title, '(Spec)'
 ]
 
 { #category : #'accessing menu' }
