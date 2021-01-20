@@ -33,7 +33,8 @@ HogeAppDelegate class >> createAppIconForm [
 HogeAppDelegate class >> resetIcon [
 	<script>
 	AppIcon := nil.
-	MenubarMorph reset
+	#MenubarMorph asClassIfPresent: [ :clazz | clazz reset. ]. "fix for 6.1"
+	
 ]
 
 { #category : #specs }
