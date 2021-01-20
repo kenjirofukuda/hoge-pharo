@@ -9,8 +9,7 @@ Class {
 		'document'
 	],
 	#classVars : [
-		'AppIcon',
-		'PngSaveDirectory'
+		'AppIcon'
 	],
 	#category : #'Hoge-App'
 }
@@ -37,15 +36,6 @@ HogeAppDelegate class >> resetIcon [
 	MenubarMorph reset
 ]
 
-{ #category : #'menu items' }
-HogeAppDelegate class >> savePngMorph: aMorph [
-	PNGReadWriter
-		putForm: aMorph imageForm
-		onFileNamed:
-			(HogeAppSettings instance pngSaveDirectory asFileReference / (aMorph asString , '.png'))
-				nextVersion
-]
-
 { #category : #specs }
 HogeAppDelegate class >> statusbarHeight [
 
@@ -55,20 +45,6 @@ HogeAppDelegate class >> statusbarHeight [
 { #category : #api }
 HogeAppDelegate class >> windowIcon [
 	^ self appIcon 
-]
-
-{ #category : #'menu items' }
-HogeAppDelegate class >> windowMenuOn: aBuilder [
-	"Window Shot utility"
-
-	<windowMenu>
-	(HogeAppSettings instance pngSaveDirectory asString asFileReference isDirectory)
-		ifTrue: [ 
-			(aBuilder item: #'Save As PNG')
-				action: [ self savePngMorph: aBuilder model ];
-				iconName: #image;
-				order: 300;
-				withSeparatorAfter ]
 ]
 
 { #category : #commands }
@@ -105,7 +81,9 @@ HogeAppDelegate >> cmdInstallSampleGraphics [
 { #category : #commands }
 HogeAppDelegate >> cmdOpenSettings [
 	SettingBrowser new
-		changePackageSet: {self class package};
+		changePackageSet: {
+			self class package. 
+			RPackage organizer packageNamed: 'KFImaging' };
 		open;
 		expandAll
 ]

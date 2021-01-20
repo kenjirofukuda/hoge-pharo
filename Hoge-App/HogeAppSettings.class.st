@@ -2,7 +2,6 @@ Class {
 	#name : #HogeAppSettings,
 	#superclass : #Object,
 	#instVars : [
-		'pngSaveDirectory',
 		'handleSize',
 		'pointDisplaySize'
 	],
@@ -22,12 +21,6 @@ HogeAppSettings class >> settingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #Hoge)
 		with: [ 
-			(aBuilder setting: #pngSaveDirectory)
-				type: #Directory;
-				target: self;
-				targetSelector: #instance;
-				description: 'The path of a directory where png file';
-				label: 'PNG Save directory'.	"TODO: move to KFImaging"
 			(aBuilder range: #handleSize)
 				target: self;
 				targetSelector: #instance;
@@ -52,17 +45,6 @@ HogeAppSettings >> handleSize [
 { #category : #accessing }
 HogeAppSettings >> handleSize: anInteger [
 	handleSize := anInteger
-]
-
-{ #category : #accessing }
-HogeAppSettings >> pngSaveDirectory [
-	^ pngSaveDirectory ifNil: [
-		pngSaveDirectory :=  FileSystem workingDirectory fullName].
-]
-
-{ #category : #accessing }
-HogeAppSettings >> pngSaveDirectory: aFileReference [
-	pngSaveDirectory := aFileReference
 ]
 
 { #category : #accessing }
