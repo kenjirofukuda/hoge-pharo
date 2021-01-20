@@ -136,18 +136,18 @@ HogeAppPresenter >> editMenu [
 
 { #category : #'accessing menu' }
 HogeAppPresenter >> fileMenu [
+
 	| modifire |
 	modifire := OSPlatform current defaultModifier.
-	^ self newMenu
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					menuItemMap at: #settings put: item.
-					item
-						name: 'Settings...';
-						shortcut: modifire + $,;
-						action: [ 
-							delegate cmdOpenSettings ] ] ]
+	^ self newMenu addGroup: [ :group | 
+		  group addItem: [ :item | 
+			  menuItemMap at: #settings put: item.
+			  item
+				  name: 'Settings...';
+				  action: [ delegate cmdOpenSettings ].
+			  [ item shortcut: modifire + $, ]
+				  on: Error
+				  do: [ self inform: 'Why ca''nt use $, short cut on Pharo 9.0 !!!'  ] ] ]
 ]
 
 { #category : #accessing }
