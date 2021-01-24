@@ -70,6 +70,7 @@ BaselineOfHoge >> registerPackages: spec [
 		package: 'Hoge-App'
 		with: [ spec
 				requires: #('KFImaging' 'NeoCSV' 'Hoge-Generic' 'Hoge-Extension') ].
+	spec package: 'Hoge-Commands'.
 	spec package: 'Hoge-App-Spec' with: [ spec requires: #('Hoge-App') ].
-	spec package: 'Hoge-App-Spec2' with: [ spec requires: #('Hoge-App') ]
+	spec package: 'Hoge-App-Spec2' with: [ spec requires: #('Hoge-App' 'Hoge-Commands') ]
 ]
