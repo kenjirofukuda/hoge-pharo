@@ -7,7 +7,7 @@ Class {
 { #category : #converting }
 HgOpenSettings >> asSpecCommand [
 	^ super asSpecCommand
-		shortcutKey: $, control;
+		"shortcutKey: $, control;" "cant use $, in Pharo 9.0"
 		yourself
 ]
 

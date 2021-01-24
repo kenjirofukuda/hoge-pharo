@@ -27,7 +27,7 @@ HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
 		keysAndValuesDo: [ :menuName :commands | 
 			| menu |
 			menu := (CmCommandGroup named: menuName) asSpecGroup.
-			commands do: [ :each | menu register: each forSpec ].
+			commands do: [ :each | menu register: (each forSpec context: presenter)].
 			menuBar register: menu ].
 	menuBar beDisplayedAsGroup.
 	^ menuBar
@@ -310,6 +310,7 @@ HogeAppPresenter >> initializeWidgets [
 { #category : #initialization }
 HogeAppPresenter >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
+	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	aWindowPresenter
 		initialExtent: delegate initialExtent;
 		menu: self menuBar;
