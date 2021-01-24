@@ -1,15 +1,31 @@
 Class {
 	#name : #HogeAppPresenter,
 	#superclass : #SpPresenter,
+	#traits : 'SpTContextMenu',
+	#classTraits : 'SpTContextMenu classTrait',
 	#instVars : [
-		'menuItemMap',
-		'menuBar',
-		'delegate',
-		'graphicView',
-		'statusBar'
+		'#menuItemMap',
+		'#menuBar',
+		'#delegate',
+		'#graphicView',
+		'#statusBar'
 	],
 	#category : #'Hoge-App-Spec2'
 }
+
+{ #category : #commands }
+HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
+	^ (CmCommandGroup named: 'MenuBar') asSpecGroup
+		register:
+			((CmCommandGroup named: 'File') asSpecGroup
+				register: HgOpenSettings forSpec);
+		register:
+			((CmCommandGroup named: 'Edit') asSpecGroup
+				register: HgSelectAllCommand forSpec;
+				register: HgUnselectAllCommand forSpec);
+		beDisplayedAsGroup;
+		yourself
+]
 
 { #category : #specs }
 HogeAppPresenter class >> defaultSpec [
@@ -41,6 +57,11 @@ HogeAppPresenter >> cmdToggleShowsAxisline: sender [
 HogeAppPresenter >> cmdToggleShowsExtentBounds: sender [
 	delegate cmdToggleShowsExtentBounds.
 	sender name: delegate nameForToggleShowsExtentBounds
+]
+
+{ #category : #'as yet unclassified' }
+HogeAppPresenter >> contextMenuFromCommandsGroup: aValuable [
+	self contextMenu: [ aValuable value beRoot asMenuPresenter ]
 ]
 
 { #category : #'accessing menu' }
@@ -97,41 +118,73 @@ HogeAppPresenter >> editMenu [
 	| modifire |
 	modifire := OSPlatform current defaultModifier.
 	^ self newMenu
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					menuItemMap at: #undo put: item.
-					item
-						name: 'Undo';
-						shortcut: modifire + $z;
-						action: [ delegate cmdUndo ] ].
-			group
-				addItem: [ :item | 
-					menuItemMap at: #redo put: item.
-					item
-						name: 'Redo';
-						shortcut: modifire + $z shift;
-						action: [ delegate cmdRedo ] ].
-			group
-				addItem: [ :item | 
-					menuItemMap at: #clear put: item.
-					item
-						name: 'Clear';
-						shortcut: modifire + Character backspace;
-						action: [ delegate cmdClearGraphics ] ].
-			group
-				addItem: [ :item | 
-					menuItemMap at: #selectAll put: item.
-					item
-						name: 'Select All';
-						shortcut: modifire + $a;
-						action: [ delegate cmdSelectAll ] ].
-			group
-				addItem: [ :item | 
-					menuItemMap at: #deselectAll put: item.
-					item
-						name: 'Deselect All';
-						action: [ delegate cmdDeselectAll ] ] ]
+		addItem: [ :item | 
+			menuItemMap at: #undo put: item.
+			item
+				name: 'Undo';
+				shortcut: modifire + $z;
+				action: [ delegate cmdUndo ] ];
+		addItem: [ :item | 
+			menuItemMap at: #redo put: item.
+			item
+				name: 'Redo';
+				shortcut: modifire + $z shift;
+				action: [ delegate cmdRedo ] ];
+		addItem: [ :item | 
+			menuItemMap at: #clear put: item.
+			item
+				name: 'Clear';
+				shortcut: modifire + Character backspace;
+				action: [ delegate cmdClearGraphics ] ];
+		addItem: [ :item | 
+			menuItemMap at: #selectAll put: item.
+			item
+				name: 'Select All';
+				shortcut: modifire + $a;
+				action: [ delegate cmdSelectAll ] ];
+		addItem: [ :item | 
+			menuItemMap at: #deselectAll put: item.
+			item
+				name: 'Deselect All';
+				action: [ delegate cmdDeselectAll ] ];
+		yourself
+]
+
+{ #category : #'accessing menu' }
+HogeAppPresenter >> editMenu2 [
+	| modifire |
+	modifire := OSPlatform current defaultModifier.
+	^ self newMenu
+		addItem: [ :item | 
+			menuItemMap at: #undo put: item.
+			item
+				name: 'Undo';
+				shortcut: modifire + $z;
+				action: [ delegate cmdUndo ] ];
+		addItem: [ :item | 
+			menuItemMap at: #redo put: item.
+			item
+				name: 'Redo';
+				shortcut: modifire + $z shift;
+				action: [ delegate cmdRedo ] ];
+		addItem: [ :item | 
+			menuItemMap at: #clear put: item.
+			item
+				name: 'Clear';
+				shortcut: modifire + Character backspace;
+				action: [ delegate cmdClearGraphics ] ];
+		addItem: [ :item | 
+			menuItemMap at: #selectAll put: item.
+			item
+				name: 'Select All';
+				shortcut: modifire + $a;
+				action: [ delegate cmdSelectAll ] ];
+		addItem: [ :item | 
+			menuItemMap at: #deselectAll put: item.
+			item
+				name: 'Deselect All';
+				action: [ delegate cmdDeselectAll ] ];
+		yourself
 ]
 
 { #category : #'accessing menu' }
@@ -174,7 +227,7 @@ HogeAppPresenter >> initializeMenuBar [
 				addItem: [ :item | 
 					item
 						name: 'Edit';
-						subMenu: self editMenu ].
+						subMenu: self editMenu2 ].
 			group
 				addItem: [ :item | 
 					item
@@ -220,7 +273,8 @@ HogeAppPresenter >> initializeWidgets [
 	graphicView := self newMorph.
 	graphicView morph: delegate graphicViewMorph.
 	graphicView morph on: #mouseMove send: #updateMouseStatus: to: self.
-	self initializeMenuBar.
+	"self initializeMenuBar."
+	menuBar := (self rootCommandsGroup / 'MenuBar' ) asMenuBarPresenter.
 	self focusOrder add: graphicView
 ]
 

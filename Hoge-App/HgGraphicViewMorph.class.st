@@ -30,8 +30,7 @@ HgGraphicViewMorph >> createViewport [
 	vp announcer
 		when: #viewTransformChanged
 		do: [ 
-			self clearOffCanvas.
-			self changed ].
+			self forceRedraw ].
 	^ vp
 ]
 
@@ -210,7 +209,7 @@ HgGraphicViewMorph >> initialize [
 	"can't handled #mouseWheel. direct override #mouseWheel: "
 	"self on: #mouseWheel send: #customMouseWheel: to: self." 
 	
-	useNewCanvas whenChangedDo: [ self clearOffCanvas. self changed ]
+	useNewCanvas whenChangedDo: [ self forceRedraw ]
 	
 ]
 

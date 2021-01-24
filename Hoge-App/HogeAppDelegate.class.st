@@ -62,9 +62,7 @@ HogeAppDelegate >> cmdClearGraphics [
 { #category : #commands }
 HogeAppDelegate >> cmdDeselectAll [
 	self document unselectGraphics: self document graphics.
-	self graphicViewMorph
-		clearOffCanvas;
-		changed	"TODO: event"
+	self graphicViewMorph forceRedraw	"TODO: event"
 ]
 
 { #category : #commands }
@@ -97,9 +95,7 @@ HogeAppDelegate >> cmdRedo [
 { #category : #commands }
 HogeAppDelegate >> cmdSelectAll [
 	self document selectGraphics: self document graphics.
-	self graphicViewMorph
-		clearOffCanvas;
-		changed	"TODO: fire event"
+	self graphicViewMorph forceRedraw	"TODO: fire event"
 ]
 
 { #category : #commands }
