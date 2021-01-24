@@ -20,6 +20,7 @@ HgSelectAllCommand >> canBeExecuted [
 HgSelectAllCommand >> execute [
 	self document selectGraphics: self document graphics.
 	self appDelegate graphicViewMorph forceRedraw.
+	self context updateMenuBar
 	
 ]
 

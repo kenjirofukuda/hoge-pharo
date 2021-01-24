@@ -19,8 +19,9 @@ HgDeleteGraphicsCommand >> canBeExecuted [
 { #category : #executing }
 HgDeleteGraphicsCommand >> execute [
 	self document addDeleteSelectionUndoRecord.
-	self document removeGraphics: self document selectedGraphics
-	
+	self document removeGraphics: self document selectedGraphics.
+	self context updateMenuBar
+
 ]
 
 { #category : #initialization }

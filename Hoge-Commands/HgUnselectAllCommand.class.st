@@ -20,6 +20,8 @@ HgUnselectAllCommand >> canBeExecuted [
 HgUnselectAllCommand >> execute [
 	self document unselectGraphics: self document graphics.
 	self appDelegate graphicViewMorph forceRedraw.
+	self context updateMenuBar
+
 	
 ]
 

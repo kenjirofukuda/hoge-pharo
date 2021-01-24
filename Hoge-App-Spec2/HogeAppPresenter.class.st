@@ -243,6 +243,11 @@ HogeAppPresenter >> graphicViewResized: anAnnouncement [
 ]
 
 { #category : #initialization }
+HogeAppPresenter >> initialize [
+	super initialize.
+]
+
+{ #category : #initialization }
 HogeAppPresenter >> initializeMenuBar [
 	menuItemMap := Dictionary new.
 	menuBar := self newMenuBar
@@ -344,6 +349,14 @@ HogeAppPresenter >> toolsMenu [
 					item
 						name: 'Point';
 						action: [ delegate graphicViewMorph toolClass: HgPointTool ] ] ]
+]
+
+{ #category : #initialization }
+HogeAppPresenter >> updateMenuBar [
+	"Pharo 8.0 's SpCommand hasnt updateEnableStatus"
+	menuBar := (self rootCommandsGroup / 'MenuBar' ) asMenuBarPresenter.
+	self window menu: menuBar.
+
 ]
 
 { #category : #initialization }
