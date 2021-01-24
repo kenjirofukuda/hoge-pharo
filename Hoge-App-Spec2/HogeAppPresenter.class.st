@@ -14,6 +14,12 @@ Class {
 }
 
 { #category : #commands }
+HogeAppPresenter class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
+	rootCommandGroup
+		register: (self buildMenuBarGroupWith: presenter)
+]
+
+{ #category : #commands }
 HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
 	| menuBar |
 	menuBar := (CmCommandGroup named: 'MenuBar') asSpecGroup.
