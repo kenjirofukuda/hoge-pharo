@@ -15,16 +15,16 @@ Class {
 
 { #category : #commands }
 HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
-	^ (CmCommandGroup named: 'MenuBar') asSpecGroup
-		register:
-			((CmCommandGroup named: 'File') asSpecGroup
-				register: HgOpenSettings forSpec);
-		register:
-			((CmCommandGroup named: 'Edit') asSpecGroup
-				register: HgSelectAllCommand forSpec;
-				register: HgUnselectAllCommand forSpec);
-		beDisplayedAsGroup;
-		yourself
+	| menuBar |
+	menuBar := (CmCommandGroup named: 'MenuBar') asSpecGroup.
+	self menuBarLayout
+		keysAndValuesDo: [ :menuName :commands | 
+			| menu |
+			menu := (CmCommandGroup named: menuName) asSpecGroup.
+			commands do: [ :each | menu register: each forSpec ].
+			menuBar register: menu ].
+	menuBar beDisplayedAsGroup.
+	^ menuBar
 ]
 
 { #category : #specs }
@@ -36,6 +36,20 @@ HogeAppPresenter class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #commands }
+HogeAppPresenter class >> editCommands [
+	^ { 
+	HgDeleteGraphicsCommand.
+	HgSelectAllCommand. 
+	HgUnselectAllCommand.
+	} 
+]
+
+{ #category : #commands }
+HogeAppPresenter class >> fileCommands [
+	^ { HgOpenSettings }
+]
+
 { #category : #'menu items' }
 HogeAppPresenter class >> hogeMenuOn: aBuilder [
 	<worldMenu>
@@ -45,6 +59,15 @@ HogeAppPresenter class >> hogeMenuOn: aBuilder [
 		help: 'Hoge Application Spec 2.0';
 		icon: HogeAppDelegate appIcon;
 		action: [ self new openWithSpec ]
+]
+
+{ #category : #commands }
+HogeAppPresenter class >> menuBarLayout [
+	^ OrderedDictionary
+		newFrom: {
+			('File' -> self fileCommands).
+			('Edit' -> self editCommands).
+		}
 ]
 
 { #category : #commands }
