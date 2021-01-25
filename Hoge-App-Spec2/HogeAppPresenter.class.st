@@ -20,15 +20,24 @@ HogeAppPresenter class >> buildCommandsGroupWith: presenter forRoot: rootCommand
 ]
 
 { #category : #commands }
+HogeAppPresenter class >> buildDebugMenuIn: menuBar presenter: presenter [
+	| debug |
+	debug := (CmCommandGroup named: 'Debug') asSpecGroup.
+	debug
+		register:
+			((HgInspectCommand forSpecContext: presenter)
+				name: 'Inspect Presenter';
+				description: '';
+				yourself).
+	menuBar register: debug
+]
+
+{ #category : #commands }
 HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
 	| menuBar |
 	menuBar := (CmCommandGroup named: 'MenuBar') asSpecGroup.
-	self menuBarLayout
-		keysAndValuesDo: [ :menuName :commands | 
-			| menu |
-			menu := (CmCommandGroup named: menuName) asSpecGroup.
-			commands do: [ :each | menu register: (each forSpec context: presenter)].
-			menuBar register: menu ].
+	self buildMenusFromCatalogIn: menuBar.
+	self buildDebugMenuIn: menuBar presenter: presenter.
 	menuBar beDisplayedAsGroup.
 	^ menuBar
 ]
