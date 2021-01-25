@@ -33,6 +33,16 @@ HogeAppPresenter class >> buildMenuBarGroupWith: presenter [
 	^ menuBar
 ]
 
+{ #category : #commands }
+HogeAppPresenter class >> buildMenusFromCatalogIn: menuBar [
+	self menuBarLayout
+		keysAndValuesDo: [ :menuName :commands | 
+			| menu |
+			menu := (CmCommandGroup named: menuName) asSpecGroup.
+			commands do: [ :each | menu register: each forSpec ].
+			menuBar register: menu ]
+]
+
 { #category : #specs }
 HogeAppPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
@@ -288,17 +298,25 @@ HogeAppPresenter >> initializeMenuBar [
 
 { #category : #initialization }
 HogeAppPresenter >> initializePresenter [
-	graphicView morph announcer 
-		when: #graphicViewResized send: #graphicViewResized: to: self .
-	delegate graphicViewMorph announcer 
-		when: MorphOpened do: [ delegate graphicViewMorph viewport resetPortCenter ].
-	delegate document graphicsProperty 
-		whenChangedSend: #clearOffCanvas to: delegate graphicViewMorph. 
-	delegate document graphicsProperty 
-		whenChangedSend: #changed to: delegate graphicViewMorph. 
-	delegate document graphicsProperty 
-		whenChangedDo: [ (menuItemMap at: #clear) enabled: delegate document graphics notEmpty ].
-	self whenWindowChanged: [:w | w whenClosedDo: [ UIManager default inform: 'Bye bye!' ]  ]
+	graphicView morph announcer
+		when: #graphicViewResized
+		send: #graphicViewResized:
+		to: self.
+	delegate graphicViewMorph announcer
+		when: MorphOpened
+		do: [ delegate graphicViewMorph viewport resetPortCenter ].
+	delegate document graphicsProperty
+		whenChangedSend: #clearOffCanvas
+		to: delegate graphicViewMorph.
+	delegate document graphicsProperty
+		whenChangedSend: #changed
+		to: delegate graphicViewMorph.
+	delegate document graphicsProperty
+		whenChangedDo: [ menuItemMap
+				ifNotNil: [ (menuItemMap at: #clear)
+						enabled: delegate document graphics notEmpty ] ].
+	self
+		whenWindowChanged: [ :w | w whenClosedDo: [ UIManager default inform: 'Bye bye!' ] ]
 ]
 
 { #category : #initialization }
@@ -354,8 +372,9 @@ HogeAppPresenter >> toolsMenu [
 { #category : #initialization }
 HogeAppPresenter >> updateMenuBar [
 	"Pharo 8.0 's SpCommand hasnt updateEnableStatus"
-	menuBar := (self rootCommandsGroup / 'MenuBar' ) asMenuBarPresenter.
-	self window menu: menuBar.
+	"menuBar := (self rootCommandsGroup / 'MenuBar' ) asMenuBarPresenter.
+	self window menu: menuBar."
+	self window menu: (menuBar := nil)
 
 ]
 
