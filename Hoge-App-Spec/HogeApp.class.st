@@ -5,7 +5,7 @@ i am pharo version of  kenjirofukuda/hoge (lazarus) of git.
 "
 Class {
 	#name : #HogeApp,
-	#superclass : #ComposableModel,
+	#superclass : #ComposablePresenter,
 	#instVars : [
 		'graphicView',
 		'menuBar',
@@ -174,6 +174,7 @@ HogeApp >> fileMenu [
 					menuItemMap at: #settings put: item.
 					item
 						name: 'Settings...';
+						shortcut: $, command;						
 						action: [ 
 							delegate cmdOpenSettings ] ] ]
 ]
