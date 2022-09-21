@@ -83,6 +83,11 @@ HgGraphicViewMorph >> customMouseWheel: event [
 ]
 
 { #category : #accessing }
+HgGraphicViewMorph >> customTheme [
+	^ HogeAppSettings instance
+]
+
+{ #category : #accessing }
 HgGraphicViewMorph >> document [
 	^ document value
 ]
@@ -95,10 +100,17 @@ HgGraphicViewMorph >> document: aHgGraphicDocumenmt [
 
 { #category : #drawing }
 HgGraphicViewMorph >> drawAxisOn: aCanvas [
+
 	| hvPoint |
 	hvPoint := self viewport xy2hv: 0 @ 0.
-	aCanvas line: (hvPoint x @ 0) to: (hvPoint x @ self extent y) color: Color black.
-	aCanvas line: (0 @ hvPoint y) to: (self extent x @ hvPoint y) color: Color black.	
+	aCanvas
+		line: hvPoint x @ 0
+		to: hvPoint x @ self extent y
+		color: self customTheme axisColor.
+	aCanvas
+		line: 0 @ hvPoint y
+		to: self extent x @ hvPoint y
+		color: self customTheme axisColor
 ]
 
 { #category : #drawing }
@@ -144,7 +156,7 @@ HgGraphicViewMorph >> drawOn: aCanvas [
 HgGraphicViewMorph >> ensureOffCanvas [
 	^ offCanvas ifNil: [ 
 		offCanvas := FormCanvas extent: self extent.
-		offCanvas fillColor: Color white; yourself ]
+		offCanvas fillColor: self customTheme backgroundColor ; yourself ]
 ]
 
 { #category : #geometry }
